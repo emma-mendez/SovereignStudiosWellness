@@ -88,10 +88,9 @@ export const Footer = () => {
           <div>
             <h4 className="font-display text-lg font-semibold text-foreground mb-6">Contact</h4>
             <ul className="space-y-3 text-muted-foreground">
-              <li>+44 7000 000 000</li>
-              <li>hello@sovereignlounge.co.uk</li>
-              <li>London, United Kingdom</li>
-              <li>Mon - Sat: 9am - 7pm</li>
+              <li>bookings@sovereignlounge.co.uk</li>
+              <li>Birmingham, United Kingdom</li>
+              <li>Alternative dates, subject to enquiry</li>
             </ul>
           </div>
         </div>
