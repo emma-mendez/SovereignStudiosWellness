@@ -23,13 +23,13 @@ const services = [
     link: "/body-contouring",
     highlights: ["Fat Reduction", "Cellulite Treatment", "Skin Tightening"],
   },
-  {
-    title: "Hair Styling",
-    description: "Expert hair braiding and styling services for kids and adults, from box braids to locs retwists.",
-    image: hairImg,
-    link: "/hair",
-    highlights: ["Box Braids", "Locs Retwists", "Weave Patterns", "Kids Styles"],
-  },
+  // {
+  //   title: "Hair Styling",
+  //   description: "Expert hair braiding and styling services for kids and adults, from box braids to locs retwists.",
+  //   image: hairImg,
+  //   link: "/hair",
+  //   highlights: ["Box Braids", "Locs Retwists", "Weave Patterns", "Kids Styles"],
+  // },
 ];
 
 const Index = () => {
