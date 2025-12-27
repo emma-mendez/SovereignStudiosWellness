@@ -25,7 +25,7 @@ const services = [
   },
   {
     title: "About",
-    description: "Profrssional, Experienced & Friendly Staff Dedicated To Making You Look And Feel Amazing.",
+    description: "Professional, Experienced & Friendly Staff Dedicated To Making You Look And Feel Amazing.",
     image: emmaImg,
     link: "/about",
     highlights: ["Female Therapist", "Masseuse ", "Electrical Treatments", "Contouring"],
