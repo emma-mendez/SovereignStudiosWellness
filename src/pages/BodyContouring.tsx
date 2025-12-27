@@ -93,8 +93,7 @@ const BodyContouringPage = () => {
             {/* Content Side */}
             <div>
               <p className="text-muted-foreground text-lg mb-6">
-                Originally founded in Miami, our BBL machine has taken the UK by storm. This non-invasive, 
-                non-surgical body contouring machine will transform your body using the latest technology.
+                This non-invasive, non-surgical body contouring machine will transform your body using the latest technology.
               </p>
 
               {/* Treatment Areas */}

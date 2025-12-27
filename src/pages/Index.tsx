@@ -14,7 +14,7 @@ const services = [
     description: "From lymphatic drainage to deep tissue, experience rejuvenating massage therapies that restore your body and mind.",
     image: massageImg,
     link: "/massage",
-    highlights: ["Lymphatic Drainage", "Deep Tissue", "Hot Stone", "Pregnancy Massage"],
+    highlights: ["Lymphatic Drainage", "Deep Tissue", "Hot Stone"],
   },
   {
     title: "Body Contouring",
