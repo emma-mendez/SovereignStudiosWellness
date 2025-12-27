@@ -66,7 +66,7 @@ const BodyContouringPage = () => {
               Body Contouring & <span className="text-gradient-secondary">Fat Reduction</span>
             </h1>
             <p className="text-muted-foreground text-lg">
-              Our clinic is equipped with medical grade devices offering the latest non-invasive, 
+              Our health and wellness lounge is equipped with devices offering the latest non-invasive, 
               results-driven solutions combining radio frequency, laser cavitation, and lymphatic drainage.
             </p>
           </div>
