@@ -6,13 +6,12 @@ const footerLinks = {
   services: [
     { name: "Massage Therapy", href: "/massage" },
     { name: "Body Contouring", href: "/body-contouring" },
-    { name: "Hair Styling", href: "/hair" },
-    { name: "Contact", href: "/contact" },
+    // { name: "Hair Styling", href: "/hair" },
+    // { name: "Contact", href: "/contact" },
   ],
   company: [
     { name: "Home", href: "/" },
     { name: "About Us", href: "/" },
-    { name: "Contact", href: "/contact" },
   ],
 };
 
@@ -25,7 +24,7 @@ export const Footer = () => {
           <div className="lg:col-span-1">
             <img src={logo} alt="Sovereign Lounge" className="h-16 w-auto mb-6" />
             <p className="text-muted-foreground mb-6">
-              Your premier destination for wellness, body transformation, and expert hair styling in London.
+              Your premier destination for wellness and body transformation in Birmingham.
             </p>
             {/* Social Links */}
             <div className="flex gap-4">
@@ -42,7 +41,7 @@ export const Footer = () => {
                 <Facebook size={18} />
               </a>
               <a 
-                href="https://wa.me/447000000000" 
+                href="https://wa.me/447983417736" 
                 className="w-10 h-10 bg-card border border-border rounded-lg flex items-center justify-center text-muted-foreground hover:text-[#25D366] hover:border-[#25D366] transition-colors"
               >
                 <MessageCircle size={18} />
@@ -101,10 +100,10 @@ export const Footer = () => {
             © {new Date().getFullYear()} Sovereign Lounge. All rights reserved.
           </p>
           <div className="flex gap-6 text-sm">
-            <Link to="/" className="text-muted-foreground hover:text-primary transition-colors">
+            <Link to="/privacy" className="text-muted-foreground hover:text-primary transition-colors">
               Privacy Policy
             </Link>
-            <Link to="/" className="text-muted-foreground hover:text-primary transition-colors">
+            <Link to="/terms" className="text-muted-foreground hover:text-primary transition-colors">
               Terms of Service
             </Link>
           </div>

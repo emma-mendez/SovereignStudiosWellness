@@ -41,8 +41,7 @@ export const Hero = () => {
             className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 animate-fade-up"
             style={{ animationDelay: "0.3s" }}
           >
-            Experience transformative massage therapy, advanced body contouring treatments, 
-            and expert hair styling at London's premier health and wellness lounge.
+            Experience transformative massage therapy and advanced body contouring treatments at Birmingham's premier health and wellness lounge.
           </p>
 
           {/* CTA Buttons */}

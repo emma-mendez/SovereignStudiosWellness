@@ -9,7 +9,7 @@ const ContactPage = () => {
   
   const openWhatsApp = () => {
     const message = encodeURIComponent("Hi! I'd like to book a consultation at Sovereign Lounge.");
-    window.open(`https://wa.me/447000000000?text=${message}`, "_blank");
+    window.open(`https://wa.me/447983417746?text=${message}`, "_blank");
   };
 
   const openBooking = () => navigate("/consultation");
@@ -55,10 +55,10 @@ const ContactPage = () => {
                   <div className="w-10 h-10 bg-accent rounded-lg flex items-center justify-center flex-shrink-0">
                     <Phone className="text-primary" size={18} />
                   </div>
-                  <div>
+                  {/* <div>
                     <div className="font-medium text-foreground">Phone</div>
-                    <div className="text-muted-foreground">+44 7000 000 000</div>
-                  </div>
+                    <div className="text-muted-foreground">+44 7983417746</div>
+                  </div> */}
                 </div>
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 bg-accent rounded-lg flex items-center justify-center flex-shrink-0">
@@ -66,7 +66,7 @@ const ContactPage = () => {
                   </div>
                   <div>
                     <div className="font-medium text-foreground">Email</div>
-                    <div className="text-muted-foreground">hello@sovereignlounge.co.uk</div>
+                    <div className="text-muted-foreground">bookings@sovereignwellnesslounge.co.uk</div>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
@@ -75,7 +75,7 @@ const ContactPage = () => {
                   </div>
                   <div>
                     <div className="font-medium text-foreground">Location</div>
-                    <div className="text-muted-foreground">London, United Kingdom</div>
+                    <div className="text-muted-foreground">Birmingham, United Kingdom</div>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
@@ -84,7 +84,7 @@ const ContactPage = () => {
                   </div>
                   <div>
                     <div className="font-medium text-foreground">Hours</div>
-                    <div className="text-muted-foreground">Mon - Sat: 9am - 7pm</div>
+                    <div className="text-muted-foreground">Dates available are subject to request</div>
                   </div>
                 </div>
               </div>
