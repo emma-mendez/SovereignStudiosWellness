@@ -55,10 +55,10 @@ const ContactPage = () => {
                   <div className="w-10 h-10 bg-accent rounded-lg flex items-center justify-center flex-shrink-0">
                     <Phone className="text-primary" size={18} />
                   </div>
-                  {/* <div>
-                    <div className="font-medium text-foreground">Phone</div>
-                    <div className="text-muted-foreground">+44 7983417746</div>
-                  </div> */}
+                  <div>
+                    <div className="font-medium text-foreground">Whats App</div>
+                    <div className="text-muted-foreground">Please Use The Whatsapp Link On The Left</div>
+                  </div>
                 </div>
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 bg-accent rounded-lg flex items-center justify-center flex-shrink-0">
