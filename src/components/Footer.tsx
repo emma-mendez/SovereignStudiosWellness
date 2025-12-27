@@ -29,17 +29,17 @@ export const Footer = () => {
             {/* Social Links */}
             <div className="flex gap-4">
               <a 
-                href="#" 
+                href="https://www.instagram.com/sovereignstudioswellness/" 
                 className="w-10 h-10 bg-card border border-border rounded-lg flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary transition-colors"
               >
                 <Instagram size={18} />
               </a>
-              <a 
+              {/* <a 
                 href="#" 
                 className="w-10 h-10 bg-card border border-border rounded-lg flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary transition-colors"
               >
                 <Facebook size={18} />
-              </a>
+              </a> */}
               <a 
                 href="https://wa.me/447983417736" 
                 className="w-10 h-10 bg-card border border-border rounded-lg flex items-center justify-center text-muted-foreground hover:text-[#25D366] hover:border-[#25D366] transition-colors"

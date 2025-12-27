@@ -9,7 +9,7 @@ const ContactPage = () => {
   
   const openWhatsApp = () => {
     const message = encodeURIComponent("Hi! I'd like to book a consultation at Sovereign Lounge.");
-    window.open(`https://wa.me/447983417746?text=${message}`, "_blank");
+    window.open(`https://wa.me/447983417736?text=${message}`, "_blank");
   };
 
   const openBooking = () => navigate("/consultation");
