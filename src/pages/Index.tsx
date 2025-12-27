@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import massageImg from "@/assets/massage-card.jpg";
 import bodyContouringImg from "@/assets/body-contouring.jpg";
-import hairImg from "@/assets/hair-braiding.jpg";
+import emmaImg from "@/assets/emmamendez.jpg";
 
 const services = [
   {
@@ -23,13 +23,13 @@ const services = [
     link: "/body-contouring",
     highlights: ["Fat Reduction", "Cellulite Treatment", "Skin Tightening"],
   },
-  // {
-  //   title: "Hair Styling",
-  //   description: "Expert hair braiding and styling services for kids and adults, from box braids to locs retwists.",
-  //   image: hairImg,
-  //   link: "/hair",
-  //   highlights: ["Box Braids", "Locs Retwists", "Weave Patterns", "Kids Styles"],
-  // },
+  {
+    title: "About",
+    description: "Profrssional, Experienced & Friendly Staff Dedicated To Making You Look And Feel Amazing.",
+    image: emmaImg,
+    link: "/about",
+    highlights: ["Female Therapist", "Masseuse ", "Electrical Treatments", "Contouring"],
+  },
 ];
 
 const Index = () => {
