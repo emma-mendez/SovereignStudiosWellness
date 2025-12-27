@@ -21,7 +21,7 @@ const services = [
     description: "Advanced non-invasive treatments using radio frequency and cavitation for fat reduction and body sculpting.",
     image: bodyContouringImg,
     link: "/body-contouring",
-    highlights: ["Fat Reduction", "Non-Surgical BBL", "Cellulite Treatment", "Skin Tightening"],
+    highlights: ["Fat Reduction", "Cellulite Treatment", "Skin Tightening"],
   },
   {
     title: "Hair Styling",

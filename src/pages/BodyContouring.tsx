@@ -26,15 +26,15 @@ const bodyServices = [
   {
     title: "Body Contouring Single",
     description: "Single session body contouring treatment for one area",
-    price: "£170",
+    price: "£120",
     duration: "1hr per area",
     benefits: ["Radio Frequency", "Ultrasonic Cavitation", "Vacuum Suction", "Lymphatic Massage"],
     image: bodyContouringImg,
   },
   {
     title: "Body Contouring Course",
-    description: "5 session course for visible and long-lasting results",
-    price: "£750",
+    description: "3 session course for visible and long-lasting results",
+    price: "£350",
     duration: "5 sessions",
     benefits: ["Best value", "Visible results", "Long-lasting effects", "Full treatment protocol"],
     image: bodyContouringImg,
@@ -42,27 +42,10 @@ const bodyServices = [
   },
   {
     title: "Fat Reduction Single",
-    description: "Targeted fat reduction treatment for stubborn areas",
+    description: "Targeted fat reduction treatment for 2 stubborn areas",
     price: "£200",
     duration: "1hr per area",
     benefits: ["Laser Lipo", "Ultrasonic Cavitation", "Radio Frequency", "Results driven"],
-    image: bodyContouringImg,
-  },
-  {
-    title: "Fat Reduction Course",
-    description: "5 session intensive fat reduction program",
-    price: "£900",
-    duration: "5 sessions",
-    benefits: ["Maximum results", "Targeted treatment", "Body transformation", "Save £100"],
-    image: bodyContouringImg,
-    isPopular: true,
-  },
-  {
-    title: "Non-Surgical BBL",
-    description: "Revolutionary non-invasive Brazilian Butt Lift course",
-    price: "£1,000",
-    duration: "5 sessions",
-    benefits: ["Buttock enhancement", "Non-invasive", "No downtime", "Natural results"],
     image: bodyContouringImg,
   },
 ];
@@ -146,7 +129,7 @@ const BodyContouringPage = () => {
               <div className="bg-accent/30 border border-primary/30 rounded-xl p-4 flex gap-3">
                 <Info className="text-primary flex-shrink-0 mt-0.5" size={20} />
                 <p className="text-sm text-muted-foreground">
-                  All BBL treatments require a minimum course of 5 sessions for visible, long-lasting results. 
+                  All countouring treatments require a minimum course of 3 sessions for visible, long-lasting results. 
                   Maintenance treatments every 8-10 weeks recommended.
                 </p>
               </div>
