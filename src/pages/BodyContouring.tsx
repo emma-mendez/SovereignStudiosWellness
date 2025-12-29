@@ -26,8 +26,8 @@ const bodyServices = [
   {
     title: "Body Contouring Single",
     description: "Single session body contouring treatment for one area",
-    price: "£120",
-    duration: "1hr per area",
+    price: "£125",
+    duration: "1 large area/2 areas per session",
     benefits: ["Radio Frequency", "Ultrasonic Cavitation", "Vacuum Suction", "Lymphatic Massage"],
     image: bodyContouringImg,
   },
@@ -35,7 +35,7 @@ const bodyServices = [
     title: "Body Contouring Course",
     description: "3 session course for visible and long-lasting results",
     price: "£350",
-    duration: "5 sessions",
+    duration: "3 sessions",
     benefits: ["Best value", "Visible results", "Long-lasting effects", "Full treatment protocol"],
     image: bodyContouringImg,
     isPopular: true,
@@ -43,7 +43,7 @@ const bodyServices = [
   {
     title: "Fat Reduction Single",
     description: "Targeted fat reduction treatment for 2 stubborn areas",
-    price: "£200",
+    price: "£125",
     duration: "1hr per area",
     benefits: ["Laser Lipo", "Ultrasonic Cavitation", "Radio Frequency", "Results driven"],
     image: bodyContouringImg,
@@ -63,7 +63,7 @@ const BodyContouringPage = () => {
           <div className="text-center max-w-3xl mx-auto mb-16">
             <span className="text-primary font-semibold uppercase tracking-wider text-sm">Advanced Treatments</span>
             <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground mt-4 mb-6">
-              Body Contouring & <span className="text-gradient-secondary">Fat Reduction</span>
+              Body Contouring & <span className="text-gradient-primary">Fat Reduction</span>
             </h1>
             <p className="text-muted-foreground text-lg">
               Our health and wellness lounge is equipped with devices offering the latest non-invasive, 

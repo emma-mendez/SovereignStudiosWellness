@@ -1,3 +1,8 @@
+
+
+
+
+
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Raleway:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
@@ -6,64 +11,64 @@
 
 @layer base {
   :root {
-    --background: 35 30% 92%;
-    --foreground: white;
+    --background: 200 20% 8%;
+    --foreground: 180 20% 95%;
 
-    /* --card: 35 35% 88%; */
-    --card-foreground: 30 20% 15%;
+    --card: 200 18% 12%;
+    --card-foreground: 180 20% 95%;
 
-    --popover: 35 35% 88%;
-    --popover-foreground: 30 20% 15%;
+    --popover: 200 18% 12%;
+    --popover-foreground: 180 20% 95%;
 
-    --primary: 187 64% 40%;
-    --primary-foreground: 35 30% 95%;
+    --primary: 187 64% 55%;
+    --primary-foreground: 200 20% 8%;
 
-    --secondary: 35 40% 80%;
-    --secondary-foreground: 30 20% 15%;
+    --secondary: 55 80% 65%;
+    --secondary-foreground: 200 20% 8%;
 
-    --muted: 35 25% 85%;
-    --muted-foreground: 30 15% 45%;
+    --muted: 200 15% 18%;
+    --muted-foreground: 180 10% 60%;
 
-    --accent: 187 50% 35%;
-    --accent-foreground: 35 30% 95%;
+    --accent: 187 50% 25%;
+    --accent-foreground: 180 20% 95%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 35 20% 75%;
-    --input: 35 20% 75%;
-    --ring: 187 64% 40%;
+    --border: 200 15% 20%;
+    --input: 200 15% 20%;
+    --ring: 187 64% 55%;
 
     --radius: 0.75rem;
 
-    --sidebar-background: 35 30% 88%;
-    --sidebar-foreground: 30 20% 15%;
-    --sidebar-primary: 187 64% 40%;
-    --sidebar-primary-foreground: 35 30% 95%;
-    --sidebar-accent: 35 25% 82%;
-    --sidebar-accent-foreground: 30 20% 15%;
-    --sidebar-border: 35 20% 75%;
-    --sidebar-ring: 187 64% 40%;
+    --sidebar-background: 200 18% 10%;
+    --sidebar-foreground: 180 20% 95%;
+    --sidebar-primary: 187 64% 55%;
+    --sidebar-primary-foreground: 200 20% 8%;
+    --sidebar-accent: 200 15% 18%;
+    --sidebar-accent-foreground: 180 20% 95%;
+    --sidebar-border: 200 15% 20%;
+    --sidebar-ring: 187 64% 55%;
 
     /* Custom colors */
-    --cyan: 187 64% 40%;
-    --cyan-light: 187 55% 55%;
-    --cyan-dark: 187 60% 30%;
-    --beige: 35 30% 92%;
-    --beige-light: 35 35% 96%;
-    --beige-dark: 35 25% 80%;
+    --cyan: 187 64% 55%;
+    --cyan-light: 187 70% 70%;
+    --cyan-dark: 187 60% 40%;
+    --yellow: 55 80% 65%;
+    --yellow-light: 55 85% 75%;
+    --yellow-dark: 55 70% 50%;
     
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(187 64% 40%) 0%, hsl(187 55% 55%) 100%);
-    --gradient-secondary: linear-gradient(135deg, hsl(35 40% 80%) 0%, hsl(35 35% 88%) 100%);
-    --gradient-dark: linear-gradient(180deg, hsl(35 30% 92%) 0%, hsl(35 35% 88%) 100%);
-    --gradient-card: linear-gradient(145deg, hsl(35 35% 90%) 0%, hsl(35 35% 85%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(30 20% 15% / 0.85) 0%, hsl(30 15% 20% / 0.7) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(187 64% 55%) 0%, hsl(187 70% 70%) 100%);
+    --gradient-secondary: linear-gradient(135deg, hsl(55 80% 65%) 0%, hsl(55 85% 75%) 100%);
+    --gradient-dark: linear-gradient(180deg, hsl(200 20% 8%) 0%, hsl(200 18% 12%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(200 18% 14%) 0%, hsl(200 18% 10%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(200 20% 8% / 0.9) 0%, hsl(200 18% 12% / 0.7) 100%);
     
     /* Shadows */
-    --shadow-glow: 0 0 40px hsl(187 64% 40% / 0.25);
-    --shadow-card: 0 10px 40px -10px hsl(30 20% 15% / 0.15);
-    --shadow-elevated: 0 20px 60px -15px hsl(30 20% 15% / 0.2);
+    --shadow-glow: 0 0 40px hsl(187 64% 55% / 0.3);
+    --shadow-card: 0 10px 40px -10px hsl(0 0% 0% / 0.5);
+    --shadow-elevated: 0 20px 60px -15px hsl(0 0% 0% / 0.6);
   }
 
   .dark {
