@@ -18,14 +18,14 @@ const ContactPage = () => {
     <div className="min-h-screen bg-background">
       <Header />
       <main className="pt-24 pb-16">
-        <div className="container mx-auto px-4">
+        <div className="grid gap-8 max-w-4xl mx-auto mb-12">
           {/* Page Header */}
           <div className="text-center max-w-3xl mx-auto mb-16">
             <span className="text-primary font-semibold uppercase tracking-wider text-sm">Get In Touch</span>
             <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground mt-4 mb-6">
               Book Your <span className="text-gradient-primary">Consultation</span>
             </h1>
-            <p className="text-muted-foreground text-lg text-center">
+            <p className="text-muted-foreground text-lg">
               Ready to start your wellness journey? Get in touch with us to book your consultation 
               or treatment. We're here to help you achieve your goals.
             </p>
