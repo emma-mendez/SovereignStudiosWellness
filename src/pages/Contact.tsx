@@ -100,7 +100,7 @@ const ContactPage = () => {
               Book a consultation and our experts will help you find the perfect treatment plan 
               tailored to your needs and goals.
             </p>
-            <Button variant="secondary" size="xl" onClick={openBooking}>
+            <Button variant="default" size="xl" onClick={openBooking}>
               Book & Pay Deposit
             </Button>
           </div>
