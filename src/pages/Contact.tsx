@@ -25,7 +25,7 @@ const ContactPage = () => {
             <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground mt-4 mb-6">
               Book Your <span className="text-gradient-primary">Consultation</span>
             </h1>
-            <p className="text-muted-foreground text-lg">
+            <p className="text-muted-foreground text-lg text-center">
               Ready to start your wellness journey? Get in touch with us to book your consultation 
               or treatment. We're here to help you achieve your goals.
             </p>
