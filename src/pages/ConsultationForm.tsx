@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
+import { format } from "date-fns";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { QuestionSlide } from "@/components/QuestionSlide";
@@ -11,6 +12,14 @@ import { ArrowLeft, Check, ExternalLink } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/8x27sLdrH5UAaHvcsX7wA03";
+
+// Helper to format time label
+const formatTimeLabel = (time: string): string => {
+  const [hours, minutes] = time.split(':').map(Number);
+  const period = hours >= 12 ? 'PM' : 'AM';
+  const displayHours = hours % 12 || 12;
+  return `${displayHours}:${minutes.toString().padStart(2, '0')} ${period}`;
+};
 
 const ConsultationFormPage = () => {
   const [searchParams] = useSearchParams();
@@ -139,24 +148,39 @@ const ConsultationFormPage = () => {
                   const val = formData[q.field as keyof ConsultationFormData];
                   if (!val || (Array.isArray(val) && val.length === 0)) return null;
                   
-                  let displayValue = val;
-                  if (Array.isArray(val)) {
-                    displayValue = val.join(", ");
-                  }
-                  if (q.options) {
-                    if (Array.isArray(val)) {
+                  let displayValue: string;
+                  
+                  // Handle date type with time
+                  if (q.type === "date" && val && typeof val === 'object' && 'date' in val) {
+                    const dateVal = val as { date?: Date; time?: string };
+                    if (dateVal.date instanceof Date) {
+                      const timeLabel = dateVal.time 
+                        ? ` at ${formatTimeLabel(dateVal.time)}` 
+                        : '';
+                      displayValue = format(dateVal.date, "EEEE, MMMM d, yyyy") + timeLabel;
+                    } else {
+                      return null;
+                    }
+                  } else if (q.type === "duration" && q.options) {
+                    displayValue = q.options.find((o) => o.value === val)?.label || String(val);
+                  } else if (Array.isArray(val)) {
+                    if (q.options) {
                       displayValue = val
                         .map((v) => q.options?.find((o) => o.value === v)?.label || v)
                         .join(", ");
                     } else {
-                      displayValue = q.options.find((o) => o.value === val)?.label || val;
+                      displayValue = val.join(", ");
                     }
+                  } else if (q.options) {
+                    displayValue = q.options.find((o) => o.value === val)?.label || String(val);
+                  } else {
+                    displayValue = String(val);
                   }
 
                   return (
                     <div key={q.id} className="border-b border-border pb-3 last:border-0">
                       <p className="text-sm text-muted-foreground">{q.title}</p>
-                      <p className="text-foreground font-medium">{String(displayValue)}</p>
+                      <p className="text-foreground font-medium">{displayValue}</p>
                     </div>
                   );
                 })}
@@ -201,7 +225,7 @@ const ConsultationFormPage = () => {
     );
   }
 
-  const currentQuestion = questions[currentStep];
+  const currentQuestion = questions[currentStep] || questions[questions.length - 1];
 
   return (
     <div className="min-h-screen bg-background">

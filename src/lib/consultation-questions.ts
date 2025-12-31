@@ -2,7 +2,7 @@ export interface QuestionStep {
   id: string;
   title: string;
   subtitle?: string;
-  type: "text" | "email" | "phone" | "radio" | "checkbox" | "textarea";
+  type: "text" | "email" | "phone" | "radio" | "checkbox" | "textarea" | "date" | "duration";
   field: string;
   options?: { value: string; label: string }[];
   required?: boolean;
@@ -279,5 +279,42 @@ export const consultationQuestions: QuestionStep[] = [
       { value: "ambient-music", label: "Ambient music" },
       { value: "nature-sounds", label: "Nature sounds" },
     ],
+  },
+  {
+    id: "wantsAftercareAdvice",
+    title: "Would you like post-session aftercare advice?",
+    type: "radio",
+    field: "wantsAftercareAdvice",
+    required: true,
+    options: [
+      { value: "yes", label: "Yes" },
+      { value: "no", label: "No" },
+    ],
+  },
+
+  // Session Duration (before date selection)
+  {
+    id: "sessionDuration",
+    title: "How long would you like your session?",
+    subtitle: "Select your preferred duration",
+    type: "duration",
+    field: "sessionDuration",
+    required: true,
+    options: [
+      { value: "30", label: "30 minutes" },
+      { value: "60", label: "60 minutes" },
+      { value: "90", label: "90 minutes" },
+      { value: "120", label: "2 hours" },
+    ],
+  },
+
+  // Date and Time (last question)
+  {
+    id: "preferredDate",
+    title: "Select your preferred appointment date & time",
+    subtitle: "Choose from available slots",
+    type: "date",
+    field: "preferredDate",
+    required: true,
   },
 ];

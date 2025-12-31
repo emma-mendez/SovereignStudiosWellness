@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { ArrowRight, ArrowLeft, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { QuestionStep } from "@/lib/consultation-questions";
+import { BookingCalendar } from "@/components/BookingCalendar";
 
 interface QuestionSlideProps {
   question: QuestionStep;
@@ -39,6 +40,13 @@ export const QuestionSlide = ({
     if (question.type === "checkbox") {
       return Array.isArray(value) && value.length > 0;
     }
+    if (question.type === "date") {
+      // For date type, we need both date and time
+      return value?.date instanceof Date && value?.time;
+    }
+    if (question.type === "duration") {
+      return value && value !== "";
+    }
     return value && value !== "";
   };
 
@@ -53,9 +61,9 @@ export const QuestionSlide = ({
   };
 
   const handleOptionSelect = (selectedValue: string) => {
-    if (question.type === "radio") {
+    if (question.type === "radio" || question.type === "duration") {
       onChange(selectedValue);
-      // Auto-advance for radio buttons
+      // Auto-advance for radio buttons and duration
       setTimeout(() => {
         setIsAnimating(true);
         setTimeout(() => {
@@ -186,6 +194,39 @@ export const QuestionSlide = ({
               );
             })}
           </div>
+        ) : question.type === "date" ? (
+          <BookingCalendar
+            selectedDate={value?.date instanceof Date ? value.date : undefined}
+            selectedTime={value?.time}
+            onSelect={(date, time) => onChange({ date, time })}
+          />
+        ) : question.type === "duration" ? (
+          <RadioGroup
+            value={value || ""}
+            onValueChange={handleOptionSelect}
+            className="space-y-3"
+          >
+            {question.options?.map((option) => (
+              <div
+                key={option.value}
+                className={cn(
+                  "flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all duration-200",
+                  value === option.value
+                    ? "border-primary bg-primary/10"
+                    : "border-border hover:border-primary/50 bg-card"
+                )}
+                onClick={() => handleOptionSelect(option.value)}
+              >
+                <RadioGroupItem value={option.value} id={`duration-${option.value}`} />
+                <Label htmlFor={`duration-${option.value}`} className="flex-1 cursor-pointer text-foreground">
+                  {option.label}
+                </Label>
+                {value === option.value && (
+                  <Check className="h-5 w-5 text-primary" />
+                )}
+              </div>
+            ))}
+          </RadioGroup>
         ) : null}
       </div>
 
@@ -201,7 +242,7 @@ export const QuestionSlide = ({
           <ArrowLeft className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1" />
           Back
         </Button>
-        {question.type !== "radio" && (
+        {question.type !== "radio" && question.type !== "duration" && (
           <Button
             variant="hero"
             size="lg"

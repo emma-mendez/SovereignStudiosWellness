@@ -43,6 +43,11 @@ export const consultationFormSchema = z.object({
   soundPreference: z.enum(["silence", "ambient-music", "nature-sounds"]),
   wantsAftercareAdvice: z.enum(["yes", "no"]),
 
+  // Session Duration and Booking
+  sessionDuration: z.enum(["30", "60", "90", "120"]),
+  preferredDate: z.date().optional(),
+  preferredTime: z.string().optional(),
+
   // Final Consent
   cancellationConsent: z.boolean().refine((val) => val === true, "You must agree to the cancellation policy"),
 });
@@ -59,5 +64,7 @@ export const defaultFormValues: Partial<ConsultationFormData> = {
   focusAreas: [],
   avoidAreas: "",
   desiredFeelings: [],
+  preferredDate: undefined,
+  preferredTime: undefined,
   cancellationConsent: false,
 };
