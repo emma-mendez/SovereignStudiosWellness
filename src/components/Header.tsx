@@ -11,6 +11,7 @@ const navLinks = [
   { name: "Massage", href: "/massage" },
   { name: "Body Contouring", href: "/body-contouring" },
   // { name: "Hair", href: "/hair" },
+  { name: "About", href: "/about" },
   { name: "Contact", href: "/contact" },
 ];
 

@@ -64,12 +64,13 @@ const Index = () => {
                 >
                   <div className="bg-gradient-card border border-border rounded-2xl overflow-hidden hover:border-primary transition-all duration-500 hover:shadow-elevated hover:-translate-y-2">
                     {/* Image */}
-                    <div className="relative h-56 overflow-hidden">
+                    <div className="relative h-72 overflow-hidden">
                       <img 
                         src={service.image} 
                         alt={service.title} 
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                      />
+                        className={`w-full h-full transition-transform duration-500 group-hover:scale-110 ${
+                          service.title === "About" ? "object-contain bg-muted/30" : "object-cover"
+                        }`}                      />
                       <div className="absolute inset-0 bg-gradient-to-t from-card to-transparent" />
                     </div>
 

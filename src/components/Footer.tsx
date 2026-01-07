@@ -11,7 +11,10 @@ const footerLinks = {
   ],
   company: [
     { name: "Home", href: "/" },
-    { name: "About Us", href: "/" },
+    { name: "About Us", href: "/about" },
+    { name: "Contact", href: "/contact" },
+    { name: "Terms of Service", href: "/terms" },
+    { name: "Privacy Policy", href: "/privacy" },
   ],
 };
 
@@ -24,7 +27,7 @@ export const Footer = () => {
           <div className="lg:col-span-1">
             <img src={logo} alt="Sovereign Lounge" className="h-16 w-auto mb-6" />
             <p className="text-muted-foreground mb-6">
-              Your premier destination for wellness and body transformation in Birmingham.
+              Your premier destination for wellness and massage therapy in Birmingham.
             </p>
             {/* Social Links */}
             <div className="flex gap-4">
