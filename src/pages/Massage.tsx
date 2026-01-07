@@ -7,13 +7,30 @@ import massageImg from "@/assets/massage-card.jpg";
 
 const massageServices = [
   {
+    title: "Relaxing Massage",
+    description: "Gentle full body massage for ultimate relaxation",
+    price: "£35/£70",
+    duration: "30/60 mins",
+    benefits: ["Stress relief", "Muscle relaxation", "Improved sleep", "Mental clarity"],
+    image: massageImg,
+    isPopular: true,
+  },
+  {
+    title: "Deep Tissue Massage",
+    description: "Intensive massage targeting deep muscle tension",
+    price: "£40/£80",
+    duration: "30/60 mins",
+    benefits: ["Relieves chronic pain", "Breaks up scar tissue", "Improves mobility", "Reduces tension"],
+    image: massageImg,
+    isPopular: true,
+  },
+  {
     title: "Lymphatic Drainage",
     description: "Detoxifying massage to reduce fluid retention and boost immunity",
     price: "£75",
     duration: "75 mins",
     benefits: ["Reduces swelling", "Boosts immunity", "Detoxifies body", "Improves circulation"],
-    image: massageImg,
-    isPopular: true,
+    image: massageImg,  
   },
   {
     title: "Body Contouring Massage",
@@ -24,19 +41,11 @@ const massageServices = [
     image: massageImg,
   },
   {
-    title: "Relaxing Massage",
-    description: "Gentle full body massage for ultimate relaxation",
+    title: "Aromatherapy Massage",
+    description: "Essential oil massage for body and mind wellness",
     price: "£35/£70",
     duration: "30/60 mins",
-    benefits: ["Stress relief", "Muscle relaxation", "Improved sleep", "Mental clarity"],
-    image: massageImg,
-  },
-  {
-    title: "Deep Tissue Massage",
-    description: "Intensive massage targeting deep muscle tension",
-    price: "£40/£80",
-    duration: "30/60 mins",
-    benefits: ["Relieves chronic pain", "Breaks up scar tissue", "Improves mobility", "Reduces tension"],
+    benefits: ["Mood enhancement", "Stress reduction", "Skin nourishment", "Relaxation"],
     image: massageImg,
   },
   // {
@@ -47,14 +56,6 @@ const massageServices = [
   //   benefits: ["Deep muscle relief", "Improves circulation", "Reduces stress", "Eases pain"],
   //   image: massageImg,
   // },
-  {
-    title: "Aromatherapy Massage",
-    description: "Essential oil massage for body and mind wellness",
-    price: "£35/£70",
-    duration: "30/60 mins",
-    benefits: ["Mood enhancement", "Stress reduction", "Skin nourishment", "Relaxation"],
-    image: massageImg,
-  },
 ];
 
 const MassagePage = () => {
