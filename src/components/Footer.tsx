@@ -92,7 +92,6 @@ export const Footer = () => {
             <ul className="space-y-3 text-muted-foreground">
               <li>bookings@sovereignlounge.co.uk</li>
               <li>Birmingham, United Kingdom</li>
-              <li>Alternative dates, subject to enquiry</li>
             </ul>
           </div>
         </div>
