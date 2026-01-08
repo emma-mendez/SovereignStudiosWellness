@@ -97,6 +97,7 @@ const ConsultationFormPage = () => {
 
   const openBooking = () => {
     window.open(SETMORE_BOOKING_LINK, "_blank");
+  };
 
   if (isSubmitted) {
     return (
@@ -119,7 +120,7 @@ const ConsultationFormPage = () => {
                 <ExternalLink className="ml-2 h-5 w-5" />
               </Button>
               <p className="text-sm text-muted-foreground mt-4">
-                After booking, return here for our Thank You page with app download for seamless future rebookings.
+                After booking, return here for our thank you page with app download.
               </p>              
             </div>
           </div>
