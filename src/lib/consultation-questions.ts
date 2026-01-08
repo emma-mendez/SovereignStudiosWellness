@@ -114,17 +114,6 @@ export const consultationQuestions: QuestionStep[] = [
       { value: "no", label: "No" },
     ],
   },
-  {
-    id: "comfortableStudioEnvironment",
-    title: "Are you comfortable receiving treatment in a wellness studio environment rather than a clinical setting?",
-    type: "radio",
-    field: "comfortableStudioEnvironment",
-    required: true,
-    options: [
-      { value: "yes", label: "Yes" },
-      { value: "no", label: "No" },
-    ],
-  },
 
   // Preferences
   {
@@ -266,6 +255,7 @@ export const consultationQuestions: QuestionStep[] = [
     options: [
       { value: "verbal-check-ins", label: "Verbal check-ins" },
       { value: "minimal-talking", label: "Minimal talking" },
+      { value: "no-preference", label: "No preference" },
     ],
   },
   {
@@ -278,43 +268,34 @@ export const consultationQuestions: QuestionStep[] = [
       { value: "silence", label: "Silence" },
       { value: "ambient-music", label: "Ambient music" },
       { value: "nature-sounds", label: "Nature sounds" },
-    ],
-  },
-  {
-    id: "wantsAftercareAdvice",
-    title: "Would you like post-session aftercare advice?",
-    type: "radio",
-    field: "wantsAftercareAdvice",
-    required: true,
-    options: [
-      { value: "yes", label: "Yes" },
-      { value: "no", label: "No" },
+      { value: "meditation-sounds", label: "Meditation sounds" },
+      { value: "no-preference", label: "No preference" },      
     ],
   },
 
   // Session Duration (before date selection)
-  {
-    id: "sessionDuration",
-    title: "How long would you like your session?",
-    subtitle: "Select your preferred duration",
-    type: "duration",
-    field: "sessionDuration",
-    required: true,
-    options: [
-      { value: "30", label: "30 minutes" },
-      { value: "60", label: "60 minutes" },
-      { value: "90", label: "90 minutes" },
-      { value: "120", label: "2 hours" },
-    ],
-  },
+  // {
+  //   id: "sessionDuration",
+  //   title: "How long would you like your session?",
+  //   subtitle: "Select your preferred duration",
+  //   type: "duration",
+  //   field: "sessionDuration",
+  //   required: true,
+  //   options: [
+  //     { value: "30", label: "30 minutes" },
+  //     { value: "60", label: "60 minutes" },
+  //     { value: "90", label: "90 minutes" },
+  //     { value: "120", label: "2 hours" },
+  //   ],
+  // },
 
   // Date and Time (last question)
-  {
-    id: "preferredDate",
-    title: "Select your preferred appointment date & time",
-    subtitle: "Choose from available slots",
-    type: "date",
-    field: "preferredDate",
-    required: true,
-  },
+  // {
+  //   id: "preferredDate",
+  //   title: "Select your preferred appointment date & time",
+  //   subtitle: "Choose from available slots",
+  //   type: "date",
+  //   field: "preferredDate",
+  //   required: true,
+  // },
 ];
