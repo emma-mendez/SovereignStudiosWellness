@@ -90,7 +90,14 @@ export const Footer = () => {
           <div>
             <h4 className="font-display text-lg font-semibold text-foreground mb-6">Contact</h4>
             <ul className="space-y-3 text-muted-foreground">
-              <li>bookings@sovereignwellnesslounge.co.uk</li>
+              <li>
+                <a 
+                  href="mailto:bookings@sovereignwellnesslounge.co.uk" 
+                  className="hover:text-primary transition-colors"
+                >
+                  bookings@sovereignwellnesslounge.co.uk
+                </a>
+              </li>              
               <li>Birmingham, United Kingdom</li>
             </ul>
           </div>
