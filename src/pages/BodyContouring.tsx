@@ -156,7 +156,15 @@ const BodyContouringPage = () => {
 
           {/* CTA Section */}
           <div className="mt-16 text-center">
-            <p className="text-muted-foreground mb-6">Not sure which treatment is right for you? Give us a call.</p>
+            <a 
+                href="/contact" 
+                className="hover:text-primary transition-colors"
+              >
+            <p className="mb-6">Not sure which treatment is right for you? Give us a call.
+
+            </p>
+              
+                </a>
             <Button variant="hero" size="xl" onClick={openBooking}>
               Book a Consultation
             </Button>
