@@ -68,7 +68,7 @@ export const Hero = () => {
           >
             <div className="text-center">
               <div className="text-3xl md:text-4xl font-bold text-primary mb-1">02+</div>
-              <div className="text-sm text-muted-foreground">Happy Clients</div>
+              <div className="text-sm text-muted-foreground">Happy Clients <br/> (counted 1 by 1)</div>
             </div>
             <div className="text-center">
               <div className="text-3xl md:text-4xl font-bold text-secondary mb-1">5+</div>
@@ -76,7 +76,7 @@ export const Hero = () => {
             </div>
             <div className="text-center">
               <div className="text-3xl md:text-4xl font-bold text-primary mb-1">5★</div>
-              <div className="text-sm text-muted-foreground">Rated</div>
+              <div className="text-sm text-muted-foreground">Google Reviews</div>
             </div>
           </div>
         </div>

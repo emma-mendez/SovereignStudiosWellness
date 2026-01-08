@@ -11,7 +11,7 @@ import { ConsultationFormData, defaultFormValues } from "@/lib/consultation-sche
 import { ArrowLeft, Check, ExternalLink } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/8x27sLdrH5UAaHvcsX7wA03";
+const SETMORE_BOOKING_LINK = "https://sovereignwellnesslounge.setmore.com/emma";
 
 // Helper to format time label
 const formatTimeLabel = (time: string): string => {
@@ -95,9 +95,8 @@ const ConsultationFormPage = () => {
     }
   };
 
-  const openPayment = () => {
-    window.open(STRIPE_PAYMENT_LINK, "_blank");
-  };
+  const openBooking = () => {
+    window.open(SETMORE_BOOKING_LINK, "_blank");
 
   if (isSubmitted) {
     return (
@@ -113,13 +112,15 @@ const ConsultationFormPage = () => {
                 Consultation <span className="text-gradient-primary">Received</span>
               </h1>
               <p className="text-muted-foreground mb-8">
-                Thank you for completing your consultation form. To secure your booking, 
-                please proceed with the deposit payment below.
+                Thank you for completing your consultation form. Click below to book your appointment.
               </p>
-              <Button variant="hero" size="xl" onClick={openPayment} className="group">
-                Proceed to Payment
+              <Button variant="hero" size="xl" onClick={openBooking} className="group">
+                Book Now
                 <ExternalLink className="ml-2 h-5 w-5" />
               </Button>
+              <p className="text-sm text-muted-foreground mt-4">
+                After booking, return here for our Thank You page with app download for seamless future rebookings.
+              </p>              
             </div>
           </div>
         </main>

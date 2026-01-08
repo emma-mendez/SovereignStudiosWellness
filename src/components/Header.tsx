@@ -4,7 +4,7 @@ import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/logo.png";
 
-const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/8x27sLdrH5UAaHvcsX7wA03";
+const SETMORE_BOOKING_LINK = "https://sovereignwellnesslounge.setmore.com/emma";
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -20,8 +20,7 @@ export const Header = () => {
   const location = useLocation();
 
   const openBooking = () => {
-    window.open(STRIPE_PAYMENT_LINK, "_blank");
-  };
+    window.open(SETMORE_BOOKING_LINK, "_blank");  };
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border">
