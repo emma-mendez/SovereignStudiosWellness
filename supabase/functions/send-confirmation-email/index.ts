@@ -10,26 +10,60 @@ const corsHeaders = {
 };
 
 interface ConsultationData {
-  fullName: string;
+  // Basic Info
+  name: string;
   email: string;
   phone: string;
-  preferredContact: string;
-  serviceInterest: string[];
-  sessionDuration: string;
-  goals: string;
-  healthConcerns: string;
-  allergies: string;
-  medications: string;
-  previousExperience: string;
-  pressurePreference: string;
-  focusAreas: string[];
-  additionalNotes: string;
   isModelSession?: boolean;
+  
+  // Medical History
+  previousBodywork: "yes" | "no";
+  underMedicalCare: "yes" | "no";
+  medicalConditions: string[];
+  additionalNotes?: string;
+  
+  // Booking Reason
+  primaryReason: string;
+  
+  // Consent
+  understandsProfessional: "yes" | "no";
+  comfortableStudioEnvironment: "yes" | "no";
+  
+  // Preferences
+  roomTemperature: "cool" | "warm" | "hot";
+  scentPreference: "none" | "lemongrass" | "lavender";
+  pressurePreference: "light" | "medium" | "deep";
+  focusAreas: string[];
+  avoidAreas?: string;
+  
+  // Intent
+  desiredFeelings: string[];
+  
+  // Demographics
+  gender: "female" | "male" | "prefer-not-to-say";
+  ageGroup: string;
+  weightCategory: string;
+  bodyType?: string;
+  
+  // Session Preferences
+  consentStyle: "verbal-check-ins" | "minimal-talking";
+  soundPreference: "silence" | "ambient-music" | "nature-sounds";
+  wantsAftercareAdvice: "yes" | "no";
+  
+  // Session Duration and Booking
+  sessionDuration: string;
+  preferredDate?: string;
+  preferredTime?: string;
 }
 
 const formatArrayValue = (value: string[] | undefined): string => {
-  if (!value || value.length === 0) return "Not specified";
+  if (!value || value.length === 0) return "None specified";
   return value.join(", ");
+};
+
+const formatYesNo = (value: string | undefined): string => {
+  if (!value) return "Not specified";
+  return value === "yes" ? "Yes" : "No";
 };
 
 const handler = async (req: Request): Promise<Response> => {
@@ -52,67 +86,115 @@ const handler = async (req: Request): Promise<Response> => {
         <table style="width: 100%; border-collapse: collapse;">
           <tr style="background: #f9f9f9;">
             <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Name</td>
-            <td style="padding: 10px; border: 1px solid #ddd;">${data.fullName || 'Not provided'}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">${data.name || 'Not provided'}</td>
           </tr>
           <tr>
             <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Email</td>
-            <td style="padding: 10px; border: 1px solid #ddd;">${data.email || 'Not provided'}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;"><a href="mailto:${data.email}">${data.email || 'Not provided'}</a></td>
           </tr>
           <tr style="background: #f9f9f9;">
             <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Phone</td>
             <td style="padding: 10px; border: 1px solid #ddd;">${data.phone || 'Not provided'}</td>
           </tr>
+        </table>
+
+        <h2 style="color: #333; margin-top: 20px;">Demographics</h2>
+        <table style="width: 100%; border-collapse: collapse;">
+          <tr style="background: #f9f9f9;">
+            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Gender</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">${data.gender || 'Not specified'}</td>
+          </tr>
           <tr>
-            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Preferred Contact</td>
-            <td style="padding: 10px; border: 1px solid #ddd;">${data.preferredContact || 'Not specified'}</td>
+            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Age Group</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">${data.ageGroup || 'Not specified'}</td>
+          </tr>
+          <tr style="background: #f9f9f9;">
+            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Weight Category</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">${data.weightCategory || 'Not specified'}</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Body Type</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">${data.bodyType || 'Not specified'}</td>
           </tr>
         </table>
 
-        <h2 style="color: #333; margin-top: 20px;">Service Details</h2>
+        <h2 style="color: #333; margin-top: 20px;">Session Details</h2>
         <table style="width: 100%; border-collapse: collapse;">
           <tr style="background: #f9f9f9;">
-            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Services Interested In</td>
-            <td style="padding: 10px; border: 1px solid #ddd;">${formatArrayValue(data.serviceInterest)}</td>
+            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Primary Reason for Visit</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">${data.primaryReason || 'Not specified'}</td>
           </tr>
           <tr>
             <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Session Duration</td>
-            <td style="padding: 10px; border: 1px solid #ddd;">${data.sessionDuration || 'Not specified'}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">${data.sessionDuration ? data.sessionDuration + ' minutes' : 'Not specified'}</td>
           </tr>
           <tr style="background: #f9f9f9;">
-            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Goals</td>
-            <td style="padding: 10px; border: 1px solid #ddd;">${data.goals || 'Not provided'}</td>
+            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Desired Feelings</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">${formatArrayValue(data.desiredFeelings)}</td>
           </tr>
         </table>
 
-        <h2 style="color: #333; margin-top: 20px;">Health Information</h2>
+        <h2 style="color: #333; margin-top: 20px;">Medical History</h2>
         <table style="width: 100%; border-collapse: collapse;">
           <tr style="background: #f9f9f9;">
-            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Health Concerns</td>
-            <td style="padding: 10px; border: 1px solid #ddd;">${data.healthConcerns || 'None'}</td>
+            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Previous Bodywork Experience</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">${formatYesNo(data.previousBodywork)}</td>
           </tr>
           <tr>
-            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Allergies</td>
-            <td style="padding: 10px; border: 1px solid #ddd;">${data.allergies || 'None'}</td>
+            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Under Medical Care</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">${formatYesNo(data.underMedicalCare)}</td>
           </tr>
           <tr style="background: #f9f9f9;">
-            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Medications</td>
-            <td style="padding: 10px; border: 1px solid #ddd;">${data.medications || 'None'}</td>
+            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Medical Conditions</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">${formatArrayValue(data.medicalConditions)}</td>
           </tr>
         </table>
 
-        <h2 style="color: #333; margin-top: 20px;">Preferences</h2>
+        <h2 style="color: #333; margin-top: 20px;">Session Preferences</h2>
         <table style="width: 100%; border-collapse: collapse;">
           <tr style="background: #f9f9f9;">
-            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Previous Experience</td>
-            <td style="padding: 10px; border: 1px solid #ddd;">${data.previousExperience || 'Not specified'}</td>
-          </tr>
-          <tr>
             <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Pressure Preference</td>
             <td style="padding: 10px; border: 1px solid #ddd;">${data.pressurePreference || 'Not specified'}</td>
           </tr>
-          <tr style="background: #f9f9f9;">
+          <tr>
             <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Focus Areas</td>
             <td style="padding: 10px; border: 1px solid #ddd;">${formatArrayValue(data.focusAreas)}</td>
+          </tr>
+          <tr style="background: #f9f9f9;">
+            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Areas to Avoid</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">${data.avoidAreas || 'None'}</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Room Temperature</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">${data.roomTemperature || 'Not specified'}</td>
+          </tr>
+          <tr style="background: #f9f9f9;">
+            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Scent Preference</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">${data.scentPreference || 'Not specified'}</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Sound Preference</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">${data.soundPreference || 'Not specified'}</td>
+          </tr>
+          <tr style="background: #f9f9f9;">
+            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Communication Style</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">${data.consentStyle === 'verbal-check-ins' ? 'Verbal Check-ins' : data.consentStyle === 'minimal-talking' ? 'Minimal Talking' : 'Not specified'}</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Wants Aftercare Advice</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">${formatYesNo(data.wantsAftercareAdvice)}</td>
+          </tr>
+        </table>
+
+        <h2 style="color: #333; margin-top: 20px;">Consent Confirmations</h2>
+        <table style="width: 100%; border-collapse: collapse;">
+          <tr style="background: #f9f9f9;">
+            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Understands Professional Nature</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">${formatYesNo(data.understandsProfessional)}</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Comfortable with Studio Environment</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">${formatYesNo(data.comfortableStudioEnvironment)}</td>
           </tr>
         </table>
 
@@ -133,7 +215,7 @@ const handler = async (req: Request): Promise<Response> => {
     const emailResponse = await resend.emails.send({
       from: "Sovereign Wellness <onboarding@resend.dev>",
       to: ["sovereignwellnesslounge@gmail.com"],
-      subject: `New Consultation: ${data.fullName || 'Unknown'}${data.isModelSession ? ' (Model Session)' : ''}`,
+      subject: `New Consultation: ${data.name || 'Unknown'}${data.isModelSession ? ' (Model Session)' : ''}`,
       html: emailHtml,
     });
 
