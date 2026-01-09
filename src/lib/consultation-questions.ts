@@ -211,11 +211,11 @@ export const consultationQuestions: QuestionStep[] = [
     field: "ageGroup",
     required: true,
     options: [
-      { value: "18-25", label: "18–25" },
-      { value: "26-35", label: "26–35" },
-      { value: "36-45", label: "36–45" },
-      { value: "46-55", label: "46–55" },
-      { value: "55+", label: "55+" },
+      { value: "18-25", label: "18-25" },
+      { value: "26-35", label: "26-35" },
+      { value: "36-45", label: "36-45" },
+      { value: "46-55", label: "46-55" },
+      { value: "55_plus", label: "55+" },
     ],
   },
   {
