@@ -128,7 +128,7 @@ const ConsultationFormPage = () => {
                 <ExternalLink className="ml-2 h-5 w-5" />
               </Button>
               <p className="text-sm text-muted-foreground mt-4">
-                After booking, return here for our thank you page with app download.
+                After booking, return here to our 'Thank You' page and download our app for seamless repeat bookings.
               </p>              
             </div>
           </div>
