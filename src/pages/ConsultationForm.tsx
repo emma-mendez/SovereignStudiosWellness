@@ -10,6 +10,7 @@ import { consultationQuestions } from "@/lib/consultation-questions";
 import { ConsultationFormData, defaultFormValues } from "@/lib/consultation-schema";
 import { ArrowLeft, Check, ExternalLink } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const SETMORE_BOOKING_LINK = "https://sovereignwellnesslounge.setmore.com/emma";
 
@@ -74,17 +75,24 @@ const ConsultationFormPage = () => {
 
     // Simulate submission (in real app, this would send to Google Drive via API)
     try {
-      // For now, we'll just simulate success
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const { data, error } = await supabase.functions.invoke('send-consultation-email', {
+        body: formData,
+      });
+
+      if (error) {
+        throw error;
+      }
       
-      console.log("Form submitted:", { ...formData, cancellationConsent });
+      console.log("Form submitted and email sent:", data);
       
       setIsSubmitted(true);
       toast({
         title: "Consultation Submitted!",
-        description: "Your consultation form has been received. Redirecting to payment...",
+        description: "Your consultation form has been received.",
       });
     } catch (error) {
+      console.error("Submission error:", error);
+
       toast({
         title: "Submission Error",
         description: "There was an error submitting your form. Please try again.",
