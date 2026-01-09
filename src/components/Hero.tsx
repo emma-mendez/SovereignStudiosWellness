@@ -74,10 +74,15 @@ export const Hero = () => {
               <div className="text-3xl md:text-4xl font-bold text-secondary mb-1">5+</div>
               <div className="text-sm text-muted-foreground">Treatments</div>
             </div>
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-primary mb-1">5★</div>
-              <div className="text-sm text-muted-foreground">Google Reviews</div>
-            </div>
+            <a 
+              href="https://g.page/r/Cd-7YQlcZmRsEAE/review" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-center group cursor-pointer"
+            >
+              <div className="text-3xl md:text-4xl font-bold text-primary mb-1 group-hover:scale-110 transition-transform">5★</div>
+              <div className="text-sm text-muted-foreground group-hover:text-primary transition-colors">Google Reviews <br/>(click here)</div>
+            </a>
           </div>
         </div>
       </div>
