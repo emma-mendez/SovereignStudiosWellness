@@ -51,9 +51,9 @@ interface ConsultationData {
   wantsAftercareAdvice: "yes" | "no";
   
   // Session Duration and Booking
-  sessionDuration: string;
-  preferredDate?: string;
-  preferredTime?: string;
+  // sessionDuration: string;
+  // preferredDate?: string;
+  // preferredTime?: string;
 }
 
 const formatArrayValue = (value: string[] | undefined): string => {

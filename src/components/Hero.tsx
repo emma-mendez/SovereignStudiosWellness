@@ -32,7 +32,7 @@ export const Hero = () => {
             style={{ animationDelay: "0.2s" }}
           >
             Your Journey to{" "}
-            <span className="text-gradient-primary">Wellness</span>{" "}
+            <span className="text-color-pulse">Wellness</span>{" "}
             Begins Here
           </h1>
 

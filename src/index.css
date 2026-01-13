@@ -106,6 +106,18 @@
     background-image: var(--gradient-secondary);
   }
 
+    .text-color-pulse {
+    animation: colorPulse 3s ease-in-out infinite;
+  }
+  @keyframes colorPulse {
+    0%, 100% {
+      color: hsl(var(--primary));
+    }
+    50% {
+      color: hsl(var(--secondary));
+    }
+  }
+
   .bg-gradient-primary {
     background-image: var(--gradient-primary);
   }
@@ -192,6 +204,15 @@
   }
   50% {
     transform: translateY(-10px);
+      }
+}
+
+@keyframes colorPulse {
+  0%, 100% {
+    color: hsl(var(--cyan));
+  }
+  50% {
+    color: hsl(35, 30%, 61%);
   }
 }
 
