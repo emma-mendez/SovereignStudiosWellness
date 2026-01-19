@@ -227,7 +227,7 @@ export const consultationQuestions: QuestionStep[] = [
     required: true,
     options: [
       { value: "under-70kg", label: "Under 70kg" },
-      { value: "70-90kg", label: "70–90kg" },
+      { value: "70-90kg", label: "70-90kg" },
       { value: "90kg+", label: "90kg+" },
     ],
   },
@@ -274,20 +274,20 @@ export const consultationQuestions: QuestionStep[] = [
   },
 
   // Session Duration (before date selection)
-  // {
-  //   id: "sessionDuration",
-  //   title: "How long would you like your session?",
-  //   subtitle: "Select your preferred duration",
-  //   type: "duration",
-  //   field: "sessionDuration",
-  //   required: true,
-  //   options: [
-  //     { value: "30", label: "30 minutes" },
-  //     { value: "60", label: "60 minutes" },
-  //     { value: "90", label: "90 minutes" },
-  //     { value: "120", label: "2 hours" },
-  //   ],
-  // },
+  {
+    id: "sessionDuration",
+    title: "How long would you like your session?",
+    subtitle: "Select your preferred duration",
+    type: "duration",
+    field: "sessionDuration",
+    required: true,
+    options: [
+      { value: "30", label: "30 minutes" },
+      { value: "60", label: "60 minutes" },
+      { value: "90", label: "90 minutes" },
+      { value: "120", label: "2 hours" },
+    ],
+  },
 
   // Date and Time (last question)
   // {

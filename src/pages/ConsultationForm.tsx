@@ -7,7 +7,7 @@ import { QuestionSlide } from "@/components/QuestionSlide";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { consultationQuestions } from "@/lib/consultation-questions";
-import { ConsultationFormData, defaultFormValues } from "@/lib/consultation-schema";
+import { ConsultationFormData, consultationSchema, defaultFormValues } from "@/lib/consultation-schema";
 import { ArrowLeft, Check, ExternalLink } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -61,47 +61,53 @@ const ConsultationFormPage = () => {
     }
   };
 
-  const handleSubmit = async () => {
-    if (!cancellationConsent) {
-      toast({
-        title: "Agreement Required",
-        description: "Please agree to the cancellation policy to continue.",
-        variant: "destructive",
-      });
-      return;
-    }
+ const handleSubmit = async () => {
+  if (!cancellationConsent) {
+    toast({
+      title: "Agreement Required",
+      description: "Please agree to the cancellation policy to continue.",
+      variant: "destructive",
+    });
+    return;
+  }
 
-    setIsSubmitting(true);
+  // Honeypot check (frontend)
+  if ((formData as any).company) {
+    return;
+  }
 
-    // Simulate submission (in real app, this would send to Google Drive via API)
-    try {
-      const { data, error } = await supabase.functions.invoke('send-consultation-email', {
-        body: formData,
-      });
+  const parsed = consultationSchema.safeParse(formData);
 
-      if (error) {
-        throw error;
-      }
-      
-      console.log("Form submitted and email sent:", data);
-      
-      setIsSubmitted(true);
-      toast({
-        title: "Consultation Submitted!",
-        description: "Your consultation form has been received.",
-      });
-    } catch (error) {
-      console.error("Submission error:", error);
+  if (!parsed.success) {
+    toast({
+      title: "Form incomplete",
+      description: parsed.error.errors[0].message,
+      variant: "destructive",
+    });
+    return;
+  }
 
-      toast({
-        title: "Submission Error",
-        description: "There was an error submitting your form. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  setIsSubmitting(true);
+
+  try {
+    const { data, error } = await supabase.functions.invoke(
+      "send-consultation-email",
+      { body: parsed.data }
+    );
+
+    if (error) throw error;
+
+    setIsSubmitted(true);
+  } catch (err) {
+    toast({
+      title: "Submission Error",
+      description: "Please try again.",
+      variant: "destructive",
+    });
+  } finally {
+    setIsSubmitting(false);
+  }
+};
 
   const openBooking = () => {
     window.open(SETMORE_BOOKING_LINK, "_blank");

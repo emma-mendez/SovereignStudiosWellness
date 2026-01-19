@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.201.0/http/server.ts";
 import { Resend } from "https://esm.sh/resend@2.0.0";
+import { z } from "https://deno.land/x/zod@v3.23.8/mod.ts";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
@@ -9,244 +10,98 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type",
 };
 
-interface ConsultationData {
-  // Basic Info
-  name: string;
-  email: string;
-  phone: string;
-  isModelSession?: boolean;
+const consultationSchema = z.object({
+  company: z.string().max(0).optional(), // honeypot
 
-  // Medical History
-  previousBodywork: "yes" | "no";
-  underMedicalCare: "yes" | "no";
-  medicalConditions: string[];
-  additionalNotes?: string;
+  name: z.string().min(3),
+  email: z.string().email(),
+  phone: z.string().regex(/^[0-9]{7,15}$/),
 
-  // Booking Reason
-  primaryReason: string;
+  isModelSession: z.boolean().optional(),
 
-  // Consent (single, enforced)
-  understandsProfessional: "yes" | "no";
+  previousBodywork: z.enum(["yes", "no"]),
+  underMedicalCare: z.enum(["yes", "no"]),
+  medicalConditions: z.array(z.string()),
+  additionalNotes: z.string().optional(),
 
-  // Preferences
-  roomTemperature: "cool" | "warm" | "hot";
-  scentPreference?: "none" | "lemongrass" | "lavender";
-  pressurePreference: "light" | "medium" | "deep";
-  focusAreas: string[];
-  avoidAreas?: string;
+  primaryReason: z.string(),
 
-  // Intent
-  desiredFeelings: string[];
+  understandsProfessional: z.literal("yes"),
 
-  // Demographics
-  gender: "female" | "male" | "prefer-not-to-say";
-  ageGroup: string;
-  weightCategory: string;
-  bodyType?: string;
+  roomTemperature: z.enum(["cool", "warm", "hot"]),
+  scentPreference: z.enum(["none", "lemongrass", "lavender"]).optional(),
+  pressurePreference: z.enum(["light", "medium", "deep"]),
+  focusAreas: z.array(z.string()),
+  avoidAreas: z.string().optional(),
 
-  // Session Preferences
-  consentStyle: "verbal-check-ins" | "minimal-talking" | "no-preference";
-  soundPreference:
-    | "silence"
-    | "ambient-music"
-    | "nature-sounds"
-    | "meditation-sounds"
-    | "no-preference";
-  sessionDuration: "30" | "60" | "90" | "120";
+  desiredFeelings: z.array(z.string()),
 
-}
+  gender: z.enum(["female", "male", "prefer-not-to-say"]),
+  ageGroup: z.enum(["18-25", "26-35", "36-45", "46-55", "55_plus"]),
+  weightCategory: z.enum(["under-70kg", "70-90kg", "90kg+"]),
+  bodyType: z.string().optional(),
 
+  consentStyle: z.enum([
+    "verbal-check-ins",
+    "minimal-talking",
+    "no-preference",
+  ]),
+  soundPreference: z.enum([
+    "silence",
+    "ambient-music",
+    "nature-sounds",
+    "meditation-sounds",
+    "no-preference",
+  ]),
+  sessionDuration: z.enum(["30", "60", "90", "120"]),
+});
 
-const formatArrayValue = (value?: string[]) => {
-  if (!value || value.length === 0) return "None specified";
-  if (value.includes("none")) return "None";
-  return value.join(", ");
-};
-
-
-const formatYesNo = (value?: string) =>
-  value === "yes" ? "Yes" : value === "no" ? "No" : "";
-
-
-const handler = async (req: Request): Promise<Response> => {
+serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const data: ConsultationData = await req.json();
-      // HARD GATE — no consent, no email
-    if (data.understandsProfessional !== "yes") {
+    const raw = await req.json();
+
+    const parsed = consultationSchema.safeParse(raw);
+
+    if (!parsed.success) {
       return new Response(
-        JSON.stringify({
-          success: false,
-          error: "Professional consent not granted",
-        }),
-        {
-          status: 400,
-          headers: { "Content-Type": "application/json", ...corsHeaders },
-        }
+        JSON.stringify({ error: parsed.error.flatten() }),
+        { status: 400, headers: corsHeaders }
       );
     }
 
+    const data = parsed.data;
+
     const emailHtml = `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-        <h1 style="color: #8B5A2B; border-bottom: 2px solid #D4AF37; padding-bottom: 10px;">
-          New Consultation Form Submission
-        </h1>
-        
-        ${data.isModelSession ? '<p style="background: #FFF3CD; padding: 10px; border-radius: 5px;"><strong>📸 This is a MODEL SESSION request</strong></p>' : ''}
-        
-        <h2 style="color: #333; margin-top: 20px;">Contact Information</h2>
-        <table style="width: 100%; border-collapse: collapse;">
-          <tr style="background: #f9f9f9;">
-            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Name</td>
-            <td style="padding: 10px; border: 1px solid #ddd;">${data.name || 'Not provided'}</td>
-          </tr>
-          <tr>
-            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Email</td>
-            <td style="padding: 10px; border: 1px solid #ddd;"><a href="mailto:${data.email}">${data.email || 'Not provided'}</a></td>
-          </tr>
-          <tr style="background: #f9f9f9;">
-            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Phone</td>
-            <td style="padding: 10px; border: 1px solid #ddd;">${data.phone || 'Not provided'}</td>
-          </tr>
-        </table>
-
-        <h2 style="color: #333; margin-top: 20px;">Demographics</h2>
-        <table style="width: 100%; border-collapse: collapse;">
-          <tr style="background: #f9f9f9;">
-            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Gender</td>
-            <td style="padding: 10px; border: 1px solid #ddd;">${data.gender || 'Not specified'}</td>
-          </tr>
-          <tr>
-            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Age Group</td>
-            <td style="padding: 10px; border: 1px solid #ddd;">${data.ageGroup || 'Not specified'}</td>
-          </tr>
-          <tr style="background: #f9f9f9;">
-            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Weight Category</td>
-            <td style="padding: 10px; border: 1px solid #ddd;">${data.weightCategory || 'Not specified'}</td>
-          </tr>
-          <tr>
-            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Body Type</td>
-            <td style="padding: 10px; border: 1px solid #ddd;">${data.bodyType || 'Not specified'}</td>
-          </tr>
-        </table>
-
-        <h2 style="color: #333; margin-top: 20px;">Professional Consent</h2>
-        <table style="width: 100%; border-collapse: collapse;">
-          <tr style="background: #f9f9f9;">
-            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">
-              Professional, non-sexual session acknowledged
-            </td>
-            <td style="padding: 10px; border: 1px solid #ddd;">
-              Yes
-            </td>
-          </tr>
-        </table>
-
-
-        <h2 style="color: #333; margin-top: 20px;">Session Details</h2>
-        <table style="width: 100%; border-collapse: collapse;">
-          <tr style="background: #f9f9f9;">
-            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Primary Reason for Visit</td>
-            <td style="padding: 10px; border: 1px solid #ddd;">${data.primaryReason || 'Not specified'}</td>
-          </tr>
-          <tr>
-            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Session Duration</td>
-            <td style="padding: 10px; border: 1px solid #ddd;">${data.sessionDuration ? data.sessionDuration + ' minutes' : 'Not specified'}</td>
-          </tr>
-          <tr style="background: #f9f9f9;">
-            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Desired Feelings</td>
-            <td style="padding: 10px; border: 1px solid #ddd;">${formatArrayValue(data.desiredFeelings)}</td>
-          </tr>
-        </table>
-
-        <h2 style="color: #333; margin-top: 20px;">Medical History</h2>
-        <table style="width: 100%; border-collapse: collapse;">
-          <tr style="background: #f9f9f9;">
-            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Previous Bodywork Experience</td>
-            <td style="padding: 10px; border: 1px solid #ddd;">${formatYesNo(data.previousBodywork)}</td>
-          </tr>
-          <tr>
-            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Under Medical Care</td>
-            <td style="padding: 10px; border: 1px solid #ddd;">${formatYesNo(data.underMedicalCare)}</td>
-          </tr>
-          <tr style="background: #f9f9f9;">
-            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Medical Conditions</td>
-            <td style="padding: 10px; border: 1px solid #ddd;">${formatArrayValue(data.medicalConditions)}</td>
-          </tr>
-        </table>
-
-        <h2 style="color: #333; margin-top: 20px;">Session Preferences</h2>
-        <table style="width: 100%; border-collapse: collapse;">
-          <tr style="background: #f9f9f9;">
-            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Pressure Preference</td>
-            <td style="padding: 10px; border: 1px solid #ddd;">${data.pressurePreference || 'Not specified'}</td>
-          </tr>
-          <tr>
-            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Focus Areas</td>
-            <td style="padding: 10px; border: 1px solid #ddd;">${formatArrayValue(data.focusAreas)}</td>
-          </tr>
-          <tr style="background: #f9f9f9;">
-            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Areas to Avoid</td>
-            <td style="padding: 10px; border: 1px solid #ddd;">${data.avoidAreas || 'None'}</td>
-          </tr>
-          <tr>
-            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Room Temperature</td>
-            <td style="padding: 10px; border: 1px solid #ddd;">${data.roomTemperature || 'Not specified'}</td>
-          </tr>
-          <tr style="background: #f9f9f9;">
-            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Scent Preference</td>
-            <td style="padding: 10px; border: 1px solid #ddd;">${data.scentPreference || 'Not specified'}</td>
-          </tr>
-          <tr>
-            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Sound Preference</td>
-            <td style="padding: 10px; border: 1px solid #ddd;">${data.soundPreference || 'Not specified'}</td>
-          </tr>
-          <tr style="background: #f9f9f9;">
-            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Communication Style</td>
-            <td style="padding: 10px; border: 1px solid #ddd;">${data.consentStyle === 'verbal-check-ins' ? 'Verbal Check-ins' : data.consentStyle === 'minimal-talking' ? 'Minimal Talking' : 'Not specified'}</td>
-          </tr>
-        </table>
-
-        ${data.additionalNotes ? `
-        <h2 style="color: #333; margin-top: 20px;">Additional Notes</h2>
-        <p style="background: #f9f9f9; padding: 15px; border-radius: 5px; border-left: 4px solid #D4AF37;">
-          ${data.additionalNotes}
-        </p>
-        ` : ''}
-
-        <hr style="margin-top: 30px; border: none; border-top: 1px solid #ddd;">
-        <p style="color: #666; font-size: 12px; text-align: center;">
-          This consultation was submitted via Sovereign Wellness Lounge website.
-        </p>
-      </div>
+      <h1>New Consultation Form Submission</h1>
+      ${data.isModelSession ? "<p><strong>📸 MODEL SESSION</strong></p>" : ""}
+      <p><strong>Name:</strong> ${data.name}</p>
+      <p><strong>Email:</strong> ${data.email}</p>
+      <p><strong>Phone:</strong> ${data.phone}</p>
+      <p><strong>Age Group:</strong> ${data.ageGroup}</p>
+      <p><strong>Gender:</strong> ${data.gender}</p>
+      <p><strong>Weight:</strong> ${data.weightCategory}</p>
+      <p><strong>Duration:</strong> ${data.sessionDuration} minutes</p>
     `;
 
-    const emailResponse = await resend.emails.send({
+    const result = await resend.emails.send({
       from: "Sovereign Wellness <onboarding@resend.dev>",
       to: ["sovereignwellnesslounge@gmail.com"],
-      subject: `New Consultation: ${data.name || 'Unknown'}${data.isModelSession ? ' (Model Session)' : ''}`,
+      subject: `New Consultation: ${data.name}`,
       html: emailHtml,
     });
 
-    console.log("Email sent successfully:", emailResponse);
-
-    return new Response(JSON.stringify({ success: true, data: emailResponse }), {
+    return new Response(JSON.stringify({ success: true }), {
       status: 200,
-      headers: { "Content-Type": "application/json", ...corsHeaders },
+      headers: corsHeaders,
     });
-  } catch (error: any) {
-    console.error("Error sending consultation email:", error);
+  } catch (err) {
     return new Response(
-      JSON.stringify({ success: false, error: error.message }),
-      {
-        status: 500,
-        headers: { "Content-Type": "application/json", ...corsHeaders },
-      }
+      JSON.stringify({ error: "Server error" }),
+      { status: 500, headers: corsHeaders }
     );
   }
-};
-
-serve(handler);
+});

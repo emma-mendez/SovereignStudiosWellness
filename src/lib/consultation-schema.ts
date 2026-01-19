@@ -1,13 +1,27 @@
 import { z } from "zod";
 
-export const consultationFormSchema = z.object({
-  // Basic Info
-  name: z.string().min(2, "Please enter your full name"),
-  email: z.string().email("Enter a valid email address"),
-  phone: z.string().min(7, "Enter a valid phone number"),
+/**
+ * Shared schema: frontend + backend
+ */
+export const consultationSchema = z.object({
+  // Honeypot (must be empty)
+  company: z.string().max(0).optional(),
 
-  // Session type
-  isModelSession: z.boolean().default(false),
+  // Basic Info
+  name: z
+    .string()
+    .min(3, "Name must be at least 3 characters")
+    .trim(),
+
+  email: z
+    .string()
+    .email("Please enter a valid email address"),
+
+  phone: z
+    .string()
+    .regex(/^[0-9]{7,15}$/, "Phone number must contain digits only"),
+
+  isModelSession: z.boolean().optional(),
 
   // Medical History
   previousBodywork: z.enum(["yes", "no"]),
@@ -16,15 +30,14 @@ export const consultationFormSchema = z.object({
   additionalNotes: z.string().optional(),
 
   // Booking Reason
-  primaryReason: z.string(),
+  primaryReason: z.string().min(1),
 
   // Consent
-  understandsProfessional: z.enum(["yes", "no"]),
-  // comfortableStudioEnvironment: z.enum(["yes", "no"]),
+  understandsProfessional: z.literal("yes"),
 
   // Preferences
   roomTemperature: z.enum(["cool", "warm", "hot"]),
-  scentPreference: z.enum(["none", "lemongrass", "lavender"]),
+  scentPreference: z.enum(["none", "lemongrass", "lavender"]).optional(),
   pressurePreference: z.enum(["light", "medium", "deep"]),
   focusAreas: z.array(z.string()),
   avoidAreas: z.string().optional(),
@@ -36,27 +49,28 @@ export const consultationFormSchema = z.object({
   gender: z.enum(["female", "male", "prefer-not-to-say"]),
   ageGroup: z.enum(["18-25", "26-35", "36-45", "46-55", "55_plus"]),
   weightCategory: z.enum(["under-70kg", "70-90kg", "90kg+"]),
-  bodyType: z.enum(["petite", "average", "athletic", "curvy", "broad"]).optional(),
+  bodyType: z.string().optional(),
 
   // Session Preferences
-consentStyle: z.enum(["verbal-check-ins", "minimal-talking", "no-preference"]),
-soundPreference: z.enum(["silence", "ambient-music", "nature-sounds"]),
-
-  // Final Consent
-  cancellationConsent: z.boolean().refine((val) => val === true, "You must agree to the cancellation policy"),
+  consentStyle: z.enum([
+    "verbal-check-ins",
+    "minimal-talking",
+    "no-preference",
+  ]),
+  soundPreference: z.enum([
+    "silence",
+    "ambient-music",
+    "nature-sounds",
+    "meditation-sounds",
+    "no-preference",
+  ]),
+  sessionDuration: z.enum(["30", "60", "90", "120"]),
 });
 
-export type ConsultationFormData = z.infer<typeof consultationFormSchema>;
+export type ConsultationFormData = z.infer<typeof consultationSchema>;
 
 export const defaultFormValues: Partial<ConsultationFormData> = {
-  name: "",
-  email: "",
-  phone: "",
-  isModelSession: false,
   medicalConditions: [],
-  additionalNotes: "",
   focusAreas: [],
-  avoidAreas: "",
   desiredFeelings: [],
-  cancellationConsent: false,
 };
