@@ -52,6 +52,8 @@ interface ConsultationData {
     | "nature-sounds"
     | "meditation-sounds"
     | "no-preference";
+  sessionDuration: "30" | "60" | "90" | "120";
+
 }
 
 
@@ -149,6 +151,10 @@ const handler = async (req: Request): Promise<Response> => {
           <tr style="background: #f9f9f9;">
             <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Primary Reason for Visit</td>
             <td style="padding: 10px; border: 1px solid #ddd;">${data.primaryReason || 'Not specified'}</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Session Duration</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">${data.sessionDuration ? data.sessionDuration + ' minutes' : 'Not specified'}</td>
           </tr>
           <tr style="background: #f9f9f9;">
             <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Desired Feelings</td>
