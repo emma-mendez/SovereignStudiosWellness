@@ -209,7 +209,7 @@
 
 @keyframes colorPulse {
   0%, 100% {
-    color: hsl(var(--cyan));
+    color: hsl(var(--cyan-dark));
   }
   50% {
     color: hsl(35, 30%, 61%);
