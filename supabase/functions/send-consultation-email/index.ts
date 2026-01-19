@@ -15,56 +15,56 @@ interface ConsultationData {
   email: string;
   phone: string;
   isModelSession?: boolean;
-  
+
   // Medical History
   previousBodywork: "yes" | "no";
   underMedicalCare: "yes" | "no";
   medicalConditions: string[];
   additionalNotes?: string;
-  
+
   // Booking Reason
   primaryReason: string;
-  
-  // Consent
+
+  // Consent (single, enforced)
   understandsProfessional: "yes" | "no";
-  comfortableStudioEnvironment: "yes" | "no";
-  
+
   // Preferences
   roomTemperature: "cool" | "warm" | "hot";
-  scentPreference: "none" | "lemongrass" | "lavender";
+  scentPreference?: "none" | "lemongrass" | "lavender";
   pressurePreference: "light" | "medium" | "deep";
   focusAreas: string[];
   avoidAreas?: string;
-  
+
   // Intent
   desiredFeelings: string[];
-  
+
   // Demographics
   gender: "female" | "male" | "prefer-not-to-say";
   ageGroup: string;
   weightCategory: string;
   bodyType?: string;
-  
+
   // Session Preferences
-  consentStyle: "verbal-check-ins" | "minimal-talking";
-  soundPreference: "silence" | "ambient-music" | "nature-sounds";
-  wantsAftercareAdvice: "yes" | "no";
-  
-  // Session Duration and Booking
-  // sessionDuration: string;
-  // preferredDate?: string;
-  // preferredTime?: string;
+  consentStyle: "verbal-check-ins" | "minimal-talking" | "no-preference";
+  soundPreference:
+    | "silence"
+    | "ambient-music"
+    | "nature-sounds"
+    | "meditation-sounds"
+    | "no-preference";
 }
 
-const formatArrayValue = (value: string[] | undefined): string => {
+
+const formatArrayValue = (value?: string[]) => {
   if (!value || value.length === 0) return "None specified";
+  if (value.includes("none")) return "None";
   return value.join(", ");
 };
 
-const formatYesNo = (value: string | undefined): string => {
-  if (!value) return "Not specified";
-  return value === "yes" ? "Yes" : "No";
-};
+
+const formatYesNo = (value?: string) =>
+  value === "yes" ? "Yes" : value === "no" ? "No" : "";
+
 
 const handler = async (req: Request): Promise<Response> => {
   if (req.method === "OPTIONS") {
@@ -73,6 +73,19 @@ const handler = async (req: Request): Promise<Response> => {
 
   try {
     const data: ConsultationData = await req.json();
+      // HARD GATE — no consent, no email
+    if (data.understandsProfessional !== "yes") {
+      return new Response(
+        JSON.stringify({
+          success: false,
+          error: "Professional consent not granted",
+        }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        }
+      );
+    }
 
     const emailHtml = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
@@ -118,14 +131,24 @@ const handler = async (req: Request): Promise<Response> => {
           </tr>
         </table>
 
+        <h2 style="color: #333; margin-top: 20px;">Professional Consent</h2>
+        <table style="width: 100%; border-collapse: collapse;">
+          <tr style="background: #f9f9f9;">
+            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">
+              Professional, non-sexual session acknowledged
+            </td>
+            <td style="padding: 10px; border: 1px solid #ddd;">
+              Yes
+            </td>
+          </tr>
+        </table>
+
+
         <h2 style="color: #333; margin-top: 20px;">Session Details</h2>
         <table style="width: 100%; border-collapse: collapse;">
           <tr style="background: #f9f9f9;">
             <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Primary Reason for Visit</td>
             <td style="padding: 10px; border: 1px solid #ddd;">${data.primaryReason || 'Not specified'}</td>
-          </tr>
-          <tr>
-            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Session Duration</td>
           </tr>
           <tr style="background: #f9f9f9;">
             <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Desired Feelings</td>
@@ -178,22 +201,6 @@ const handler = async (req: Request): Promise<Response> => {
           <tr style="background: #f9f9f9;">
             <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Communication Style</td>
             <td style="padding: 10px; border: 1px solid #ddd;">${data.consentStyle === 'verbal-check-ins' ? 'Verbal Check-ins' : data.consentStyle === 'minimal-talking' ? 'Minimal Talking' : 'Not specified'}</td>
-          </tr>
-          <tr>
-            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Wants Aftercare Advice</td>
-            <td style="padding: 10px; border: 1px solid #ddd;">${formatYesNo(data.wantsAftercareAdvice)}</td>
-          </tr>
-        </table>
-
-        <h2 style="color: #333; margin-top: 20px;">Consent Confirmations</h2>
-        <table style="width: 100%; border-collapse: collapse;">
-          <tr style="background: #f9f9f9;">
-            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Understands Professional Nature</td>
-            <td style="padding: 10px; border: 1px solid #ddd;">${formatYesNo(data.understandsProfessional)}</td>
-          </tr>
-          <tr>
-            <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold;">Comfortable with Studio Environment</td>
-            <td style="padding: 10px; border: 1px solid #ddd;">${formatYesNo(data.comfortableStudioEnvironment)}</td>
           </tr>
         </table>
 
