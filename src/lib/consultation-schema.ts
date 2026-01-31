@@ -20,7 +20,6 @@ export const consultationFormSchema = z.object({
 
   // Consent
   understandsProfessional: z.enum(["yes", "no"]),
-  comfortableStudioEnvironment: z.enum(["yes", "no"]),
 
   // Preferences
   roomTemperature: z.enum(["cool", "warm", "hot"]),
@@ -34,18 +33,16 @@ export const consultationFormSchema = z.object({
 
   // Demographics
   gender: z.enum(["female", "male", "prefer-not-to-say"]),
-  ageGroup: z.enum(["18-25", "26-35", "36-45", "46-55", "55+"]),
+  ageGroup: z.enum(["18-25", "26-35", "36-45", "46-55", "55-80"]),
   weightCategory: z.enum(["under-70kg", "70-90kg", "90kg+"]),
   bodyType: z.enum(["petite", "average", "athletic", "curvy", "broad"]).optional(),
 
   // Session Preferences
   consentStyle: z.enum(["verbal-check-ins", "minimal-talking"]),
-  soundPreference: z.enum(["silence", "ambient-music", "nature-sounds"]),
+  soundPreference: z.enum(["silence", "ambient-music", "meditation-music"]),
 
   // Session Duration and Booking
   sessionDuration: z.enum(["30", "60", "90", "120"]),
-  preferredDate: z.date().optional(),
-  preferredTime: z.string().optional(),
 
   // Final Consent
   cancellationConsent: z.boolean().refine((val) => val === true, "You must agree to the cancellation policy"),
@@ -70,7 +67,7 @@ export const defaultFormValues: Partial<ConsultationFormData> = {
   focusAreas: [],
   avoidAreas: "",
   desiredFeelings: [],
-   gender: undefined,
+  gender: undefined,
   ageGroup: undefined,
   weightCategory: undefined,
   bodyType: undefined,

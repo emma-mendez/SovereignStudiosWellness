@@ -49,8 +49,7 @@ const ConsultationData = z.object({
   soundPreference: z.enum([
     "silence",
     "ambient-music",
-    "nature-sounds",
-    "meditation-sounds",
+    "meditation-music",
     "no-preference",
   ]),
   sessionDuration: z.enum(["30", "60", "90", "120"]),
