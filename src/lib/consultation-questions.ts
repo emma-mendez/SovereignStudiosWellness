@@ -269,17 +269,6 @@ export const consultationQuestions: QuestionStep[] = [
       { value: "nature-sounds", label: "Nature sounds" },
     ],
   },
-  {
-    id: "wantsAftercareAdvice",
-    title: "Would you like post-session aftercare advice?",
-    type: "radio",
-    field: "wantsAftercareAdvice",
-    required: true,
-    options: [
-      { value: "yes", label: "Yes" },
-      { value: "no", label: "No" },
-    ],
-  },
 
   // Session Duration (before date selection)
   {
