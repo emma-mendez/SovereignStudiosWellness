@@ -1,27 +1,13 @@
 import { z } from "zod";
 
-/**
- * Shared schema: frontend + backend
- */
-export const consultationSchema = z.object({
-  // Honeypot (must be empty)
-  company: z.string().max(0).optional(),
-
+export const consultationFormSchema = z.object({
   // Basic Info
-  name: z
-    .string()
-    .min(3, "Name must be at least 3 characters")
-    .trim(),
+  name: z.string().min(2, "Please enter your full name"),
+  email: z.string().email("Enter a valid email address"),
+  phone: z.string().min(7, "Enter a valid phone number"),
 
-  email: z
-    .string()
-    .email("Please enter a valid email address"),
-
-  phone: z
-    .string()
-    .regex(/^[0-9]{7,15}$/, "Phone number must contain digits only"),
-
-  isModelSession: z.boolean().optional(),
+  // Session type
+  isModelSession: z.boolean().default(false),
 
   // Medical History
   previousBodywork: z.enum(["yes", "no"]),
@@ -30,14 +16,15 @@ export const consultationSchema = z.object({
   additionalNotes: z.string().optional(),
 
   // Booking Reason
-  primaryReason: z.string().min(1),
+  primaryReason: z.string(),
 
   // Consent
-  understandsProfessional: z.literal("yes"),
+  understandsProfessional: z.enum(["yes", "no"]),
+  comfortableStudioEnvironment: z.enum(["yes", "no"]),
 
   // Preferences
   roomTemperature: z.enum(["cool", "warm", "hot"]),
-  scentPreference: z.enum(["none", "lemongrass", "lavender"]).optional(),
+  scentPreference: z.enum(["none", "lemongrass", "lavender"]),
   pressurePreference: z.enum(["light", "medium", "deep"]),
   focusAreas: z.array(z.string()),
   avoidAreas: z.string().optional(),
@@ -47,30 +34,37 @@ export const consultationSchema = z.object({
 
   // Demographics
   gender: z.enum(["female", "male", "prefer-not-to-say"]),
-  ageGroup: z.enum(["18-25", "26-35", "36-45", "46-55", "55_plus"]),
+  ageGroup: z.enum(["18-25", "26-35", "36-45", "46-55", "55+"]),
   weightCategory: z.enum(["under-70kg", "70-90kg", "90kg+"]),
-  bodyType: z.string().optional(),
+  bodyType: z.enum(["petite", "average", "athletic", "curvy", "broad"]).optional(),
 
   // Session Preferences
-  consentStyle: z.enum([
-    "verbal-check-ins",
-    "minimal-talking",
-    "no-preference",
-  ]),
-  soundPreference: z.enum([
-    "silence",
-    "ambient-music",
-    "nature-sounds",
-    "meditation-sounds",
-    "no-preference",
-  ]),
+  consentStyle: z.enum(["verbal-check-ins", "minimal-talking"]),
+  soundPreference: z.enum(["silence", "ambient-music", "nature-sounds"]),
+  wantsAftercareAdvice: z.enum(["yes", "no"]),
+
+  // Session Duration and Booking
   sessionDuration: z.enum(["30", "60", "90", "120"]),
+  preferredDate: z.date().optional(),
+  preferredTime: z.string().optional(),
+
+  // Final Consent
+  cancellationConsent: z.boolean().refine((val) => val === true, "You must agree to the cancellation policy"),
 });
 
-export type ConsultationFormData = z.infer<typeof consultationSchema>;
+export type ConsultationFormData = z.infer<typeof consultationFormSchema>;
 
 export const defaultFormValues: Partial<ConsultationFormData> = {
+  name: "",
+  email: "",
+  phone: "",
+  isModelSession: false,
   medicalConditions: [],
+  additionalNotes: "",
   focusAreas: [],
+  avoidAreas: "",
   desiredFeelings: [],
+  preferredDate: undefined,
+  preferredTime: undefined,
+  cancellationConsent: false,
 };

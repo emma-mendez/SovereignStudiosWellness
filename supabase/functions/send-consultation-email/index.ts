@@ -10,7 +10,7 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type",
 };
 
-const consultationSchema = z.object({
+const ConsultationData = z.object({
   company: z.string().max(0).optional(), // honeypot
 
   name: z.string().min(3),
@@ -37,7 +37,7 @@ const consultationSchema = z.object({
   desiredFeelings: z.array(z.string()),
 
   gender: z.enum(["female", "male", "prefer-not-to-say"]),
-  ageGroup: z.enum(["18-25", "26-35", "36-45", "46-55", "55_plus"]),
+  ageGroup: z.enum(["18-25", "26-35", "36-45", "46-55", "55-80"]),
   weightCategory: z.enum(["under-70kg", "70-90kg", "90kg+"]),
   bodyType: z.string().optional(),
 
@@ -64,7 +64,7 @@ serve(async (req) => {
   try {
     const raw = await req.json();
 
-    const parsed = consultationSchema.safeParse(raw);
+    const parsed = ConsultationData.safeParse(raw);
 
     if (!parsed.success) {
       return new Response(

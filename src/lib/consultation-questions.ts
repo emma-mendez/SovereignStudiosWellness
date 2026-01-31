@@ -211,11 +211,11 @@ export const consultationQuestions: QuestionStep[] = [
     field: "ageGroup",
     required: true,
     options: [
-      { value: "18-25", label: "18-25" },
-      { value: "26-35", label: "26-35" },
-      { value: "36-45", label: "36-45" },
-      { value: "46-55", label: "46-55" },
-      { value: "55_plus", label: "55+" },
+      { value: "18-25", label: "18–25" },
+      { value: "26-35", label: "26–35" },
+      { value: "36-45", label: "36–45" },
+      { value: "46-55", label: "46–55" },
+      { value: "55+", label: "55+" },
     ],
   },
   {
@@ -227,7 +227,7 @@ export const consultationQuestions: QuestionStep[] = [
     required: true,
     options: [
       { value: "under-70kg", label: "Under 70kg" },
-      { value: "70-90kg", label: "70-90kg" },
+      { value: "70-90kg", label: "70–90kg" },
       { value: "90kg+", label: "90kg+" },
     ],
   },
@@ -255,7 +255,6 @@ export const consultationQuestions: QuestionStep[] = [
     options: [
       { value: "verbal-check-ins", label: "Verbal check-ins" },
       { value: "minimal-talking", label: "Minimal talking" },
-      { value: "no-preference", label: "No preference" },
     ],
   },
   {
@@ -268,8 +267,17 @@ export const consultationQuestions: QuestionStep[] = [
       { value: "silence", label: "Silence" },
       { value: "ambient-music", label: "Ambient music" },
       { value: "nature-sounds", label: "Nature sounds" },
-      { value: "meditation-sounds", label: "Meditation sounds" },
-      { value: "no-preference", label: "No preference" },      
+    ],
+  },
+  {
+    id: "wantsAftercareAdvice",
+    title: "Would you like post-session aftercare advice?",
+    type: "radio",
+    field: "wantsAftercareAdvice",
+    required: true,
+    options: [
+      { value: "yes", label: "Yes" },
+      { value: "no", label: "No" },
     ],
   },
 
@@ -289,13 +297,4 @@ export const consultationQuestions: QuestionStep[] = [
     ],
   },
 
-  // Date and Time (last question)
-  // {
-  //   id: "preferredDate",
-  //   title: "Select your preferred appointment date & time",
-  //   subtitle: "Choose from available slots",
-  //   type: "date",
-  //   field: "preferredDate",
-  //   required: true,
-  // },
 ];
