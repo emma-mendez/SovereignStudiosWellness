@@ -44,6 +44,9 @@ const ConsultationFormPage = () => {
 
   // Track pending auto-advance for radio/duration questions
   const pendingAutoAdvance = useRef<string | null>(null);
+  // Lock to prevent double-advance during visual delay
+  const isAdvancing = useRef(false);
+  const advanceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const questions = consultationQuestions;
   const totalSteps = questions.length;
@@ -59,10 +62,10 @@ const ConsultationFormPage = () => {
   // Handle value change - parent owns all state updates
   const handleValueChange = useCallback(
     (field: string, value: any) => {
-      setFormData((prev) => {
-        const updated = { ...prev, [field]: value };
-        return updated;
-      });
+      // If already advancing, ignore further changes
+      if (isAdvancing.current) return;
+
+      setFormData((prev) => ({ ...prev, [field]: value }));
 
       // For radio and duration, mark pending auto-advance
       const question = questions.find((q) => q.field === field);
@@ -76,6 +79,7 @@ const ConsultationFormPage = () => {
   // Effect: auto-advance for radio/duration AFTER state has settled
   useEffect(() => {
     if (!pendingAutoAdvance.current) return;
+    if (isAdvancing.current) return;
 
     const field = pendingAutoAdvance.current;
     const question = questions.find((q) => q.field === field);
@@ -89,15 +93,27 @@ const ConsultationFormPage = () => {
 
     if (filled) {
       pendingAutoAdvance.current = null;
+      // Lock advancement to prevent rapid double-taps
+      isAdvancing.current = true;
       // Small delay to show selection highlight before advancing
-      const timer = setTimeout(() => {
+      advanceTimer.current = setTimeout(() => {
         advanceStep();
+        isAdvancing.current = false;
       }, 350);
-      return () => clearTimeout(timer);
+      return () => {
+        if (advanceTimer.current) clearTimeout(advanceTimer.current);
+      };
     }
 
     pendingAutoAdvance.current = null;
   }, [formData]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Clean up timer on unmount
+  useEffect(() => {
+    return () => {
+      if (advanceTimer.current) clearTimeout(advanceTimer.current);
+    };
+  }, []);
 
   const advanceStep = () => {
     if (currentStep < totalSteps - 1) {
@@ -108,7 +124,7 @@ const ConsultationFormPage = () => {
   };
 
   const handleNext = () => {
-    if (!canProceed) return;
+    if (!canProceed || isAdvancing.current) return;
     advanceStep();
   };
 

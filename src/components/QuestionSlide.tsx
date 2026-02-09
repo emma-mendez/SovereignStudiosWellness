@@ -52,8 +52,16 @@ export const QuestionSlide = ({
 
   const handleCheckboxChange = (optionValue: string, checked: boolean) => {
     const currentValues = Array.isArray(value) ? value : [];
+
     if (checked) {
-      onChange([...currentValues, optionValue]);
+      if (optionValue === "none") {
+        // "None" selected → deselect everything else
+        onChange(["none"]);
+      } else {
+        // Regular option selected → remove "none" if present, add new value
+        const withoutNone = currentValues.filter((v: string) => v !== "none");
+        onChange([...withoutNone, optionValue]);
+      }
     } else {
       onChange(currentValues.filter((v: string) => v !== optionValue));
     }

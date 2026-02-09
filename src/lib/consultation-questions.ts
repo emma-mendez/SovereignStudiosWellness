@@ -265,8 +265,8 @@ export const consultationQuestions: QuestionStep[] = [
     required: true,
     options: [
       { value: "silence", label: "Silence" },
+      { value: "meditation-music", label: "Meditation sounds" },
       { value: "ambient-music", label: "Ambient music" },
-      { value: "nature-sounds", label: "Nature sounds" },
     ],
   },
   // Session Duration (before date selection)
