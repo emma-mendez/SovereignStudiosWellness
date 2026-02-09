@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -20,6 +20,7 @@ interface QuestionSlideProps {
   isLast: boolean;
   currentStep: number;
   totalSteps: number;
+  canProceed: boolean;
 }
 
 export const QuestionSlide = ({
@@ -32,47 +33,22 @@ export const QuestionSlide = ({
   isLast,
   currentStep,
   totalSteps,
+  canProceed,
 }: QuestionSlideProps) => {
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [animState, setAnimState] = useState<"enter" | "visible" | "exit">("visible");
+  const prevQuestionId = useRef(question.id);
 
-  const canProceed = () => {
-    if (!question.required) return true;
-    if (question.type === "checkbox") {
-      return Array.isArray(value) && value.length > 0;
+  // Animate on question change
+  useEffect(() => {
+    if (prevQuestionId.current !== question.id) {
+      setAnimState("enter");
+      const timer = requestAnimationFrame(() => {
+        setAnimState("visible");
+      });
+      prevQuestionId.current = question.id;
+      return () => cancelAnimationFrame(timer);
     }
-    if (question.type === "date") {
-      // For date type, we need both date and time
-      return value?.date instanceof Date && value?.time;
-    }
-    if (question.type === "duration") {
-      return value && value !== "";
-    }
-    return value && value !== "";
-  };
-
-  const handleNext = () => {
-    if (canProceed()) {
-      setIsAnimating(true);
-      setTimeout(() => {
-        onNext();
-        setIsAnimating(false);
-      }, 300);
-    }
-  };
-
-  const handleOptionSelect = (selectedValue: string) => {
-    if (question.type === "radio" || question.type === "duration") {
-      onChange(selectedValue);
-      // Auto-advance for radio buttons and duration
-      setTimeout(() => {
-        setIsAnimating(true);
-        setTimeout(() => {
-          onNext();
-          setIsAnimating(false);
-        }, 300);
-      }, 300);
-    }
-  };
+  }, [question.id]);
 
   const handleCheckboxChange = (optionValue: string, checked: boolean) => {
     const currentValues = Array.isArray(value) ? value : [];
@@ -87,7 +63,7 @@ export const QuestionSlide = ({
     <div
       className={cn(
         "w-full transition-all duration-300 ease-out",
-        isAnimating ? "opacity-0 translate-x-8" : "opacity-100 translate-x-0"
+        animState === "enter" ? "opacity-0 translate-x-8" : "opacity-100 translate-x-0"
       )}
     >
       {/* Progress */}
@@ -124,8 +100,8 @@ export const QuestionSlide = ({
             placeholder={question.placeholder}
             className="text-center text-lg h-14 bg-card border-border"
             onKeyDown={(e) => {
-              if (e.key === "Enter" && canProceed()) {
-                handleNext();
+              if (e.key === "Enter" && canProceed) {
+                onNext();
               }
             }}
           />
@@ -139,7 +115,7 @@ export const QuestionSlide = ({
         ) : question.type === "radio" ? (
           <RadioGroup
             value={value || ""}
-            onValueChange={handleOptionSelect}
+            onValueChange={onChange}
             className="space-y-3"
           >
             {question.options?.map((option) => (
@@ -151,7 +127,7 @@ export const QuestionSlide = ({
                     ? "border-primary bg-primary/10"
                     : "border-border hover:border-primary/50 bg-card"
                 )}
-                onClick={() => handleOptionSelect(option.value)}
+                onClick={() => onChange(option.value)}
               >
                 <RadioGroupItem value={option.value} id={option.value} />
                 <Label htmlFor={option.value} className="flex-1 cursor-pointer text-foreground">
@@ -203,7 +179,7 @@ export const QuestionSlide = ({
         ) : question.type === "duration" ? (
           <RadioGroup
             value={value || ""}
-            onValueChange={handleOptionSelect}
+            onValueChange={onChange}
             className="space-y-3"
           >
             {question.options?.map((option) => (
@@ -215,7 +191,7 @@ export const QuestionSlide = ({
                     ? "border-primary bg-primary/10"
                     : "border-border hover:border-primary/50 bg-card"
                 )}
-                onClick={() => handleOptionSelect(option.value)}
+                onClick={() => onChange(option.value)}
               >
                 <RadioGroupItem value={option.value} id={`duration-${option.value}`} />
                 <Label htmlFor={`duration-${option.value}`} className="flex-1 cursor-pointer text-foreground">
@@ -246,8 +222,8 @@ export const QuestionSlide = ({
           <Button
             variant="hero"
             size="lg"
-            onClick={handleNext}
-            disabled={question.required && !canProceed()}
+            onClick={onNext}
+            disabled={!canProceed}
             className="group"
           >
             {isLast ? "Review" : "Next"}

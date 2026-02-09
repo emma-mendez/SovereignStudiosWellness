@@ -215,7 +215,7 @@ export const consultationQuestions: QuestionStep[] = [
       { value: "26-35", label: "26–35" },
       { value: "36-45", label: "36–45" },
       { value: "46-55", label: "46–55" },
-      { value: "55-80", label: "55-80" },
+      { value: "56-88", label: "56-88" },
     ],
   },
   {
@@ -233,7 +233,7 @@ export const consultationQuestions: QuestionStep[] = [
   },
   {
     id: "bodyType",
-    title: "Body type",
+    title: "Body type (optional)",
     type: "radio",
     field: "bodyType",
     options: [
@@ -266,10 +266,9 @@ export const consultationQuestions: QuestionStep[] = [
     options: [
       { value: "silence", label: "Silence" },
       { value: "ambient-music", label: "Ambient music" },
-      { value: "meditation-music", label: "Meditation music" },
+      { value: "nature-sounds", label: "Nature sounds" },
     ],
   },
-
   // Session Duration (before date selection)
   {
     id: "sessionDuration",
