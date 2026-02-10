@@ -39,7 +39,7 @@ export const consultationQuestions: QuestionStep[] = [
   // Medical History
   {
     id: "previousBodywork",
-    title: "Have you received bodywork, massage, or somatic therapy before?",
+    title: "Have you received a massage before?",
     type: "radio",
     field: "previousBodywork",
     required: true,
