@@ -37,7 +37,7 @@ const ConsultationData = z.object({
   desiredFeelings: z.array(z.string()),
 
   gender: z.enum(["female", "male", "prefer-not-to-say"]),
-  ageGroup: z.enum(["18-25", "26-35", "36-45", "46-55", "55-80"]),
+  ageGroup: z.enum(["16-18","18-25", "26-35", "36-45", "46-55", "55-80"]),
   weightCategory: z.enum(["under-70kg", "70-90kg", "90kg+"]),
   bodyType: z.string().optional(),
 

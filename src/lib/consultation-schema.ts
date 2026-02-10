@@ -33,7 +33,7 @@ export const consultationFormSchema = z.object({
 
   // Demographics
   gender: z.enum(["female", "male", "prefer-not-to-say"]),
-  ageGroup: z.enum(["18-25", "26-35", "36-45", "46-55", "56-88"]),
+  ageGroup: z.enum(["16-18","18-25", "26-35", "36-45", "46-55", "56-88"]),
   weightCategory: z.enum(["under-70kg", "70-90kg", "90kg+"]),
   bodyType: z.enum(["petite", "average", "athletic", "curvy", "broad"]).optional(),
 
