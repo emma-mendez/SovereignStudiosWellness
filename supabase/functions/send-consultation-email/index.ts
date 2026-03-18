@@ -5,10 +5,11 @@ import { z } from "https://deno.land/x/zod@v3.23.8/mod.ts";
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
 const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
+  "Access-Control-Allow-Origin": "https://www.sovereignwellnesslounge.co.uk",
+  "Access-Control-Allow-Headers": 
     "authorization, x-client-info, apikey, content-type",
-};
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  };
 
 const ConsultationData = z.object({
   company: z.string().max(0).optional(), // honeypot
@@ -73,6 +74,13 @@ serve(async (req) => {
     }
 
     const data = parsed.data;
+    // honeypot check (silently drop bots)
+    if (data.company) {
+      return new Response(JSON.stringify({ success: true }), {
+        status: 200,
+        headers: corsHeaders,
+      });
+    }
 
     const emailHtml = `
       <h1>New Consultation Form Submission</h1>
