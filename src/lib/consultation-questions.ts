@@ -249,13 +249,13 @@ export const consultationQuestions: QuestionStep[] = [
   // Session Preferences
   {
     id: "consentStyle",
-    title: "Do you prefer verbal check-ins during the session or minimal talking?",
+    title: "Do you prefer verbal check-ins during the session or no talking?",
     type: "radio",
     field: "consentStyle",
     required: true,
     options: [
       { value: "verbal-check-ins", label: "Verbal check-ins" },
-      { value: "minimal-talking", label: "Minimal talking" },
+      { value: "no-talking", label: "No talking" },
     ],
   },
   {

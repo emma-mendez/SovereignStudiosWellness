@@ -44,7 +44,7 @@ const ConsultationData = z.object({
 
   consentStyle: z.enum([
     "verbal-check-ins",
-    "minimal-talking",
+    "no-talking",
     "no-preference",
   ]),
   soundPreference: z.enum([
@@ -101,14 +101,24 @@ serve(async (req) => {
       html: emailHtml,
     });
 
-    return new Response(JSON.stringify({ success: true }), {
+    console.log("Resend result:", JSON.stringify(result));
+
+    if ((result as any)?.error) {
+      return new Response(
+        JSON.stringify({ error: (result as any).error }),
+        { status: 500, headers: corsHeaders }
+      );
+    }
+
+    return new Response(JSON.stringify({ success: true, result }), {
       status: 200,
       headers: corsHeaders,
     });
   } catch (err) {
-    return new Response(
-      JSON.stringify({ error: "Server error" }),
-      { status: 500, headers: corsHeaders }
-    );
+  console.error("Function error:", err);
+  return new Response(
+    JSON.stringify({ error: String(err) }),
+    { status: 500, headers: corsHeaders }
+  );
   }
 });

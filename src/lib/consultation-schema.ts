@@ -38,7 +38,7 @@ export const consultationFormSchema = z.object({
   bodyType: z.enum(["petite", "average", "athletic", "curvy", "broad"]).optional(),
 
   // Session Preferences
-  consentStyle: z.enum(["verbal-check-ins", "minimal-talking"]),
+  consentStyle: z.enum(["verbal-check-ins", "no-talking"]),
   soundPreference: z.enum(["silence", "meditation-sounds", "nature-sounds"]),
 
   // Session Duration and Booking
