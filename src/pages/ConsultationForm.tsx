@@ -59,6 +59,15 @@ const ConsultationFormPage = () => {
     !!currentQuestion.required
   );
 
+  const showBoundariesMessage = () => {
+    toast({
+      title: "Acknowledgement required",
+      description:
+        "You cannot proceed without acknowledging and agreeing that professional boundaries are in place to protect both client and practitioner.",
+      variant: "destructive",
+    });
+  };
+
   // Handle value change - parent owns all state updates
   const handleValueChange = useCallback(
     (field: string, value: any) => {
@@ -92,6 +101,11 @@ const ConsultationFormPage = () => {
     const filled = isFieldFilled(question.type, value, !!question.required);
 
     if (filled) {
+      if (field === "understandsProfessional" && value !== "yes") {
+        pendingAutoAdvance.current = null;
+        showBoundariesMessage();
+        return;
+      }
       pendingAutoAdvance.current = null;
       // Lock advancement to prevent rapid double-taps
       isAdvancing.current = true;
@@ -124,7 +138,18 @@ const ConsultationFormPage = () => {
   };
 
   const handleNext = () => {
-    if (!canProceed || isAdvancing.current) return;
+    if (isAdvancing.current) return;
+
+    if (
+      currentQuestion.field === "understandsProfessional" &&
+      formData.understandsProfessional !== "yes"
+    ) {
+      showBoundariesMessage();
+      return;
+    }
+
+    if (!canProceed) return;
+
     advanceStep();
   };
 
