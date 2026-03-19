@@ -29,7 +29,7 @@ const ConsultationData = z.object({
   bodyType: z.string().optional(),
   consentStyle: z.enum([
     "verbal-check-ins",
-    "minimal-talking",
+    "no-talking",
     "no-preference",
   ]),
   soundPreference: z.enum([
@@ -71,8 +71,14 @@ serve(async (req) => {
 
     if (!parsed.success) {
       console.error("Validation failed", parsed.error.flatten());
+      console.error("Raw payload received", JSON.stringify(raw, null, 2));
+
       return new Response(
-        JSON.stringify({ error: parsed.error.flatten() }),
+        JSON.stringify({
+          message: "Validation failed",
+          details: parsed.error.format(),
+          received: raw,
+        }),
         { status: 400, headers: corsHeaders }
       );
     }
@@ -88,47 +94,47 @@ serve(async (req) => {
     }
 
     const emailHtml = `
-      <h1>New Consultation Form Submission</h1>
+    <h1>New Consultation Form Submission</h1>
 
-      ${data.isModelSession ? "<p><strong>📸 MODEL SESSION</strong></p>" : ""}
+    ${data.isModelSession ? "<p><strong>📸 MODEL SESSION</strong></p>" : ""}
 
-      <h2>Client Details</h2>
-      <p><strong>Name:</strong> ${data.name}</p>
-      <p><strong>Email:</strong> ${data.email}</p>
-      <p><strong>Phone:</strong> ${data.phone}</p>
-      <p><strong>Age Group:</strong> ${data.ageGroup}</p>
-      <p><strong>Gender:</strong> ${data.gender}</p>
-      <p><strong>Weight:</strong> ${data.weightCategory}</p>
+    <h2>Client Details</h2>
+    <p><strong>Name:</strong> ${data.name}</p>
+    <p><strong>Email:</strong> ${data.email}</p>
+    <p><strong>Phone:</strong> ${data.phone}</p>
+    <p><strong>Age Group:</strong> ${data.ageGroup}</p>
+    <p><strong>Gender:</strong> ${data.gender}</p>
+    <p><strong>Weight:</strong> ${data.weightCategory}</p>
 
-      <h2>Session Info</h2>
-      <p><strong>Primary Reason:</strong> ${data.primaryReason}</p>
-      <p><strong>Duration:</strong> ${data.sessionDuration} minutes</p>
-      <p><strong>Pressure:</strong> ${data.pressurePreference}</p>
-      <p><strong>Room Temperature:</strong> ${data.roomTemperature}</p>
-      <p><strong>Scent:</strong> ${data.scentPreference ?? "None"}</p>
+    <h2>Session Info</h2>
+    <p><strong>Primary Reason:</strong> ${data.primaryReason}</p>
+    <p><strong>Duration:</strong> ${data.sessionDuration} minutes</p>
+    <p><strong>Pressure:</strong> ${data.pressurePreference}</p>
+    <p><strong>Room Temperature:</strong> ${data.roomTemperature}</p>
+    <p><strong>Scent:</strong> ${data.scentPreference ?? "None"}</p>
 
-      <h2>Focus</h2>
-      <p><strong>Focus Areas:</strong> ${data.focusAreas.join(", ")}</p>
-      <p><strong>Avoid Areas:</strong> ${data.avoidAreas ?? "None"}</p>
+    <h2>Focus</h2>
+    <p><strong>Focus Areas:</strong> ${data.focusAreas.join(", ")}</p>
+    <p><strong>Avoid Areas:</strong> ${data.avoidAreas ?? "None"}</p>
 
-      <h2>Wellness</h2>
-      <p><strong>Desired Feelings:</strong> ${data.desiredFeelings.join(", ")}</p>
-      <p><strong>Previous Bodywork:</strong> ${data.previousBodywork}</p>
-      <p><strong>Under Medical Care:</strong> ${data.underMedicalCare}</p>
-      <p><strong>Medical Conditions:</strong> ${
-        data.medicalConditions.length ? data.medicalConditions.join(", ") : "None"
-      }</p>
+    <h2>Wellness</h2>
+    <p><strong>Desired Feelings:</strong> ${data.desiredFeelings.join(", ")}</p>
+    <p><strong>Previous Bodywork:</strong> ${data.previousBodywork}</p>
+    <p><strong>Under Medical Care:</strong> ${data.underMedicalCare}</p>
+    <p><strong>Medical Conditions:</strong> ${
+      data.medicalConditions.length ? data.medicalConditions.join(", ") : "None"
+    }</p>
 
-      <h2>Preferences</h2>
-      <p><strong>Consent Style:</strong> ${data.consentStyle}</p>
-      <p><strong>Sound Preference:</strong> ${data.soundPreference}</p>
+    <h2>Preferences</h2>
+    <p><strong>Consent Style:</strong> ${data.consentStyle}</p>
+    <p><strong>Sound Preference:</strong> ${data.soundPreference}</p>
 
-      ${
-        data.additionalNotes
-          ? `<h2>Additional Notes</h2><p>${data.additionalNotes}</p>`
-          : ""
-      }
-    `;
+    ${
+      data.additionalNotes
+        ? `<h2>Additional Notes</h2><p>${data.additionalNotes}</p>`
+        : ""
+    }
+  `;
     const result = await resend.emails.send({
       from: "Sovereign Wellness <onboarding@resend.dev>",
       to: ["sovereignwellnesslounge@gmail.com"],
