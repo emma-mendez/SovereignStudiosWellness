@@ -130,7 +130,7 @@ export const consultationQuestions: QuestionStep[] = [
   },
   {
     id: "scentPreference",
-    title: "Scent preference (optional)",
+    title: "Scent preference",
     type: "radio",
     field: "scentPreference",
     options: [
@@ -234,7 +234,7 @@ export const consultationQuestions: QuestionStep[] = [
   },
   {
     id: "bodyType",
-    title: "Body type (optional)",
+    title: "Body type",
     type: "radio",
     field: "bodyType",
     options: [
