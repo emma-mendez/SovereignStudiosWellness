@@ -216,7 +216,7 @@ export const consultationQuestions: QuestionStep[] = [
       { value: "26-35", label: "26–35" },
       { value: "36-45", label: "36–45" },
       { value: "46-55", label: "46–55" },
-      { value: "56-88", label: "56-88" },
+      { value: "55-80", label: "55–88" },
     ],
   },
   {
@@ -255,7 +255,7 @@ export const consultationQuestions: QuestionStep[] = [
     required: true,
     options: [
       { value: "verbal-check-ins", label: "Verbal check-ins" },
-      { value: "no-talking", label: "No talking" },
+      { value: "minimal-talking", label: "No talking" },
     ],
   },
   {
@@ -267,7 +267,7 @@ export const consultationQuestions: QuestionStep[] = [
     options: [
       { value: "silence", label: "Silence" },
       { value: "meditation-music", label: "Meditation sounds" },
-      { value: "nature-sounds", label: "Nature Sounds" },
+      { value: "ambient-music", label: "Nature Sounds" },
     ],
   },
   // Session Duration (before date selection)
