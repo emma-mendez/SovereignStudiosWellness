@@ -255,7 +255,7 @@ export const consultationQuestions: QuestionStep[] = [
     required: true,
     options: [
       { value: "verbal-check-ins", label: "Verbal check-ins" },
-      { value: "minimal-talking", label: "No talking" },
+      { value: "no-talking", label: "No talking" },
     ],
   },
   {

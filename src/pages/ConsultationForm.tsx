@@ -68,6 +68,15 @@ const ConsultationFormPage = () => {
     });
   };
 
+  const showPhoneMessage = () => {
+  toast({
+    title: "Enter a valid phone number",
+    description:
+      "Phone number must start with 07 and contain 11 digits.",
+    variant: "destructive",
+  });
+};
+
   // Handle value change - parent owns all state updates
   const handleValueChange = useCallback(
     (field: string, value: any) => {
@@ -139,6 +148,16 @@ const ConsultationFormPage = () => {
 
   const handleNext = () => {
     if (isAdvancing.current) return;
+
+    if (currentQuestion.field === "phone") {
+      const phone = String(formData.phone ?? "").trim();
+      const validUkMobile = /^07\d{9}$/.test(phone);
+
+      if (!validUkMobile) {
+        showPhoneMessage();
+        return;
+      }
+    }
 
     if (
       currentQuestion.field === "understandsProfessional" &&

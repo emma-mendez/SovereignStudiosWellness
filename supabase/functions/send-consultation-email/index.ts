@@ -9,7 +9,9 @@ const ConsultationData = z.object({
   company: z.string().max(0).optional(),
   name: z.string().min(3),
   email: z.string().email(),
-  phone: z.string().regex(/^[0-9]{7,15}$/),
+  phone: z.string().regex(/^07\d{9}$/, {
+    message: "Phone number must start with 07 and contain 11 digits",
+  }),
   isModelSession: z.boolean().optional(),
   previousBodywork: z.enum(["yes", "no"]),
   underMedicalCare: z.enum(["yes", "no"]),
